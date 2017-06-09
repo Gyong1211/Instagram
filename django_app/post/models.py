@@ -20,9 +20,18 @@ class Post(models.Model):
     tag = models.ManyToManyField(
         'Tag',
     )
+    post_like = models.ManyToManyField(
+        'member.User',
+        through='PostLike',
+        related_name='post_like'
+    )
 
     def __str__(self):
         return '{}의 포스트 : {}'.format(self.author.nickname, self.content)
+
+    @property
+    def how_many_get_like(self):
+        return self.post_like.count()
 
 
 class Comment(models.Model):
@@ -39,18 +48,26 @@ class Comment(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return '{}의 포스트 {}에 대한 {}의 댓글 : {}'.format(self.post.author.nickname, self.post.content, self.author.nickname, self.content)
+        return '{}의 포스트 {}에 대한 {}의 댓글 : {}'.format(
+            self.post.author.nickname,
+            self.post.content,
+            self.author.nickname,
+            self.content
+        )
 
 
 class PostLike(models.Model):
     user = models.ForeignKey(
         'member.User',
+        on_delete=models.CASCADE
     )
-    like = models.PositiveIntegerField(default=0)
-
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE
+    )
 
 class Tag(models.Model):
-    content=models.CharField(max_length=20)
+    content = models.CharField(max_length=20)
 
     def __str__(self):
         return self.content
