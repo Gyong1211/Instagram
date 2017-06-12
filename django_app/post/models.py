@@ -20,18 +20,43 @@ class Post(models.Model):
 
     like_users = models.ManyToManyField(
         User,
-        related_name='like_posts'
+        through='PostLike',
+        related_name='like_posts',
     )
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-    tag = models.ManyToManyField('Tag',)
+    tags = models.ManyToManyField('Tag', )
 
     def __str__(self):
-        return '{}의 포스트 : {}'.format(self.author.username, self.content)
+        return '{}의 포스트'.format(self.author.username)
 
     @property
     def how_many_get_like(self):
         return self.post_like.count()
+
+    def add_comment(self, user, content):
+        return self.comment_set.create(
+            author=user,
+            content=content,
+        )
+
+    def add_tag(self, tag_name):
+        tag, tag_created = Tag.objects.get_or_create(name=tag_name)
+        if tag not in self.tags.filter(name=tag_name):
+            self.tags.add(tag)
+
+
+class PostLike(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE
+    )
+    created_date = models.DateTimeField(auto_now_add=True)
+
 
 
 class Comment(models.Model):
@@ -46,28 +71,26 @@ class Comment(models.Model):
     content = models.CharField(max_length=120)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-
+    like_users = models.ManyToManyField(
+        User,
+        through='CommentLike',
+        related_name='like_comments'
+    )
     def __str__(self):
-        return '{}의 포스트 {}에 대한 {}의 댓글 : {}'.format(
+        return '{}의 포스트에 대한 {}의 댓글 : {}'.format(
             self.post.author.username,
-            self.post.content,
             self.author.username,
             self.content
         )
 
+class CommentLike(models.Model):
+    comment = models.ForeignKey(Comment)
+    user = models.ForeignKey(User)
+    created_date = models.DateTimeField(auto_now_add=True)
 
-class PostLike(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
-    post = models.ForeignKey(
-        Post,
-        on_delete=models.CASCADE
-    )
 
 class Tag(models.Model):
-    content = models.CharField(max_length=20)
+    name = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.content
+        return self.name
