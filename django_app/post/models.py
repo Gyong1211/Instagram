@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 """
 member application 생성
@@ -12,22 +13,21 @@ member application 생성
 
 class Post(models.Model):
     author = models.ForeignKey(
-        'member.User',
+        User,
         on_delete=models.CASCADE
     )
     image = models.ImageField()
-    content = models.TextField()
-    tag = models.ManyToManyField(
-        'Tag',
+
+    like_users = models.ManyToManyField(
+        User,
+        related_name='like_posts'
     )
-    post_like = models.ManyToManyField(
-        'member.User',
-        through='PostLike',
-        related_name='post_like'
-    )
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+    tag = models.ManyToManyField('Tag',)
 
     def __str__(self):
-        return '{}의 포스트 : {}'.format(self.author.nickname, self.content)
+        return '{}의 포스트 : {}'.format(self.author.username, self.content)
 
     @property
     def how_many_get_like(self):
@@ -36,7 +36,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey(
-        'member.User',
+        User,
         on_delete=models.CASCADE,
     )
     post = models.ForeignKey(
@@ -49,16 +49,16 @@ class Comment(models.Model):
 
     def __str__(self):
         return '{}의 포스트 {}에 대한 {}의 댓글 : {}'.format(
-            self.post.author.nickname,
+            self.post.author.username,
             self.post.content,
-            self.author.nickname,
+            self.author.username,
             self.content
         )
 
 
 class PostLike(models.Model):
     user = models.ForeignKey(
-        'member.User',
+        User,
         on_delete=models.CASCADE
     )
     post = models.ForeignKey(
