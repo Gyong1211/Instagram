@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from member.models import User
-from .forms import CreatePost
+from .forms import CreatePost, ModifyPost
 from .models import Post, Comment
 
 
@@ -30,8 +30,6 @@ def post_detail(request, post_pk):
 def post_create(request):
     if request.method == 'POST':
         forms = CreatePost(request.POST, request.FILES)
-        print(forms)
-        print(forms.is_valid())
         if forms.is_valid():
             user = User.objects.first()
             post = Post.objects.create(author=user, image=request.FILES['image'])
@@ -63,3 +61,24 @@ def post_create(request):
             'forms': forms,
         }
         return render(request, 'post/post_create.html', context=context)
+
+
+def post_modify(request, post_pk):
+    post = Post.objects.get(id=post_pk)
+
+    if request.method == 'GET':
+        forms = ModifyPost(initial={'image': post.image})
+        context = {
+            'forms': forms,
+            'post': post,
+        }
+        return render(request, 'post/post_modify.html', context=context)
+
+    elif request.method == 'POST':
+        forms = ModifyPost(request.POST, request.FILES)
+        if forms.is_valid():
+            post.image = request.FILES['image']
+            post.save()
+            return redirect('post_detail', post_pk=post.id)
+
+
