@@ -16,7 +16,7 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
-    image = models.ImageField()
+    image = models.ImageField(upload_to='post', blank=True)
 
     like_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -25,7 +25,7 @@ class Post(models.Model):
     )
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField('Tag', )
+    tags = models.ManyToManyField('Tag', blank=True)
 
     def __str__(self):
         return '{}의 포스트'.format(self.author.username)
