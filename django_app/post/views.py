@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from post.models import Post, Comment
+from .forms import CreatePost
+from .models import Post, Comment
 
 
 def post_list(request):
@@ -13,3 +14,13 @@ def post_list(request):
         'posts': posts,
     }
     return render(request, 'post/post_list.html', context=context)
+
+
+def post_detail(request, post_pk):
+    post = Post.objects.get(id=post_pk)
+    comments = post.comment_set.all()
+    context = {
+        'post': post,
+        'comments': comments,
+    }
+    return render(request, 'post/post_detail.html', context=context)

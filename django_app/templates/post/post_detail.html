@@ -1,7 +1,6 @@
 {% extends 'post/post_base.html' %}
 
 {% block content %}
-{% for post in posts %}
 <div>
     <p>{{post.author}}</p>
     <p>{{post.image.url}}</p>
@@ -10,10 +9,8 @@
     <p>{{post.created_date}}</p>
     <p>{{post.modified_date}}</p>
     <p>{{post.tags}}</p>
-    {% for comment in post.comment_set.all|slice:":4" %}
+    {% for comment in comments %}
     <p><b>{{comment.author.username}}</b> : {{comment.content}} {{comment.created_date}}</p>
     {% endfor %}
 </div>
-<hr>
-{% endfor %}
 {% endblock %}
