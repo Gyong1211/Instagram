@@ -39,6 +39,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+TEMPLATES_DIR = os.path.join(BASE_DIR,'templates')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -50,6 +52,9 @@ SECRET_KEY = '8aywus&f!zc*v9c3iyxmzs1*yc@13)vz9bisd=%#tjqu)u)uu)'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# Custom user
+AUTH_USER_MODEL = 'member.User'
 
 
 # Application definition
@@ -81,7 +86,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
