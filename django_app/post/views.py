@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 
+from member.models import User
 from .forms import CreatePost
 from .models import Post, Comment
 
@@ -24,3 +25,41 @@ def post_detail(request, post_pk):
         'comments': comments,
     }
     return render(request, 'post/post_detail.html', context=context)
+
+
+def post_create(request):
+    if request.method == 'POST':
+        forms = CreatePost(request.POST, request.FILES)
+        print(forms)
+        print(forms.is_valid())
+        if forms.is_valid():
+            user = User.objects.first()
+            post = Post.objects.create(author=user, image=request.FILES['image'])
+            comment = forms.cleaned_data['comment']
+            if not comment == '':
+                Comment.objects.create(
+                    author=user,
+                    post=post,
+                    content=comment,
+                )
+            return redirect('post_list')
+
+        else:
+            context = {
+                'forms': forms
+            }
+            return render(request, 'post/post_create.html', context=context)
+
+    elif request.method == 'GET':
+        forms = CreatePost()
+        context = {
+            'forms': forms,
+        }
+        return render(request, 'post/post_create.html', context=context)
+
+    else:
+        forms = CreatePost()
+        context = {
+            'forms': forms,
+        }
+        return render(request, 'post/post_create.html', context=context)
