@@ -30,10 +30,6 @@ class Post(models.Model):
     def __str__(self):
         return '{}의 포스트'.format(self.author.username)
 
-    @property
-    def how_many_get_like(self):
-        return self.post_like.count()
-
     def add_comment(self, user, content):
         return self.comment_set.create(
             author=user,
@@ -44,6 +40,10 @@ class Post(models.Model):
         tag, tag_created = Tag.objects.get_or_create(name=tag_name)
         if tag not in self.tags.filter(name=tag_name):
             self.tags.add(tag)
+
+    @property
+    def like_count(self):
+        return self.like_users.count()
 
 
 class PostLike(models.Model):

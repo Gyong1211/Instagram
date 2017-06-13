@@ -28,10 +28,8 @@ def post_detail(request, post_pk):
         # 2. post_list view로 돌아간다
         return redirect('post:post_list')
 
-    comments = post.comment_set.all()
     context = {
         'post': post,
-        'comments': comments,
     }
     return render(request, 'post/post_detail.html', context=context)
 

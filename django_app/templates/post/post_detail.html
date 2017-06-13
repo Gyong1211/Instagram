@@ -3,14 +3,15 @@
 {% block content %}
 <div>
     <p>{{post.author}}</p>
+    <p>{{post.like_count}}</p>
     <p>{{post.image.url}}</p>
     <img src="{{post.image.url}}" alt="">
-    <p>{{post.like_users}}</p>
-    <p>{{post.created_date}}</p>
-    <p>{{post.modified_date}}</p>
-    <p>{{post.tags}}</p>
-    {% for comment in comments %}
-    <p><b>{{comment.author.username}}</b> : {{comment.content}} {{comment.created_date}}</p>
+    {% if post.comment_set.all %}
+    {% for comment in post.comment_set.all %}
+        <div>{{comment.author.username}} : {{comment.content}} {{comment.created_date}}</div>
     {% endfor %}
+    {% else %}
+        <div>댓글이 없습니다.</div>
+    {% endif %}
 </div>
 {% endblock %}

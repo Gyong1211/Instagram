@@ -5,5 +5,5 @@
     {% csrf_token %}
     <button type="submit">Delete</button>
 </form>
-<a href="{% url 'post_list' %}">Cancel</a>
+<a href="{% url 'post:post_list' %}">Cancel</a>
 {% endblock %}

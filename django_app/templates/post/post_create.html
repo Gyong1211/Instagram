@@ -3,9 +3,9 @@
 {% block content %}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-{% for form in forms %}
+    {% for form in forms %}
     <div>{{form}}</div>
-{% endfor %}
+    {% endfor %}
     <button type = submit>Post!</button>
 </form>
 {% endblock %}
