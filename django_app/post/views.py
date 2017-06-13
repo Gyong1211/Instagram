@@ -1,5 +1,7 @@
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
+from django.template import loader
+from django.urls import reverse
 
 from member.models import User
 from .forms import CreatePost, ModifyPost
@@ -26,12 +28,17 @@ def post_detail(request, post_pk):
         # return HttpResponseNotFound('Post Not found, detail: {}'.format(e))
 
         # 2. post_list view로 돌아간다
-        return redirect('post:post_list')
+        url = reverse('post:post_list')
+        return HttpResponseRedirect(url)
+        #위 2줄은 return redirect('post:post_list')와 같다.
+    template = loader.get_template('post/post_detail.html')
 
     context = {
         'post': post,
     }
-    return render(request, 'post/post_detail.html', context=context)
+    rendered_string = template.render(context = context, request = request)
+    return HttpResponse(rendered_string)
+    # return render(request, 'post/post_detail.html', context=context)
 
 
 def post_create(request):
@@ -40,13 +47,19 @@ def post_create(request):
         if forms.is_valid():
             user = User.objects.first()
             post = Post.objects.create(author=user, image=request.FILES['image'])
-            comment = forms.cleaned_data['comment']
-            if not comment == '':
-                Comment.objects.create(
+            comment_string = forms.cleaned_data['comment']
+            # if not comment_string == '':
+            #     Comment.objects.create(
+            #         author=user,
+            #         post=post,
+            #         content=comment_string,
+            #     )
+            if comment_string:
+                post.comment_set.create(
                     author=user,
-                    post=post,
-                    content=comment,
+                    content=comment_string,
                 )
+
             return redirect('post:post_list')
 
         else:
@@ -54,13 +67,6 @@ def post_create(request):
                 'forms': forms
             }
             return render(request, 'post/post_create.html', context=context)
-
-    elif request.method == 'GET':
-        forms = CreatePost()
-        context = {
-            'forms': forms,
-        }
-        return render(request, 'post/post_create.html', context=context)
 
     else:
         forms = CreatePost()
