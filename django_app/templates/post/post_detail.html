@@ -1,17 +1,5 @@
 {% extends 'common/base.html' %}
 
 {% block content %}
-<div>
-    <p>{{post.author}}</p>
-    <p>{{post.like_count}}</p>
-    <p>{{post.image.url}}</p>
-    <img src="{{post.image.url}}" alt="">
-    {% if post.comment_set.all %}
-    {% for comment in post.comment_set.all %}
-        <div>{{comment.author.username}} : {{comment.content}} {{comment.created_date}}</div>
-    {% endfor %}
-    {% else %}
-        <div>댓글이 없습니다.</div>
-    {% endif %}
-</div>
+    {% include 'include/post.html' %}
 {% endblock %}

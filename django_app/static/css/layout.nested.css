@@ -42,3 +42,6 @@ header.top-header > nav {
   max-width: 1010px;
   margin: 0 auto;
   padding-top: 40px; }
+  @media screen and (max-width: 700px) {
+    .container {
+      padding-top: 0; } }

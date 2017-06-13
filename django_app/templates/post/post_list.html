@@ -2,18 +2,6 @@
 
 {% block content %}
 {% for post in posts %}
-<div>
-    <p>{{post.author}}</p>
-    <p>{{post.image.url}}</p>
-    <img src="{{post.image.url}}" alt="">
-    <p>{{post.like_users}}</p>
-    <p>{{post.created_date}}</p>
-    <p>{{post.modified_date}}</p>
-    <p>{{post.tags}}</p>
-    {% for comment in post.comment_set.all|slice:":4" %}
-    <p><b>{{comment.author.username}}</b> : {{comment.content}} {{comment.created_date}}</p>
-    {% endfor %}
-</div>
-<hr>
+    {% include 'include/post.html' %}
 {% endfor %}
 {% endblock %}

@@ -1,7 +1,9 @@
 #wrap {
 
 }
+$screen-tablet: 700px;
 $header-height: 83px;
+
 header.top-header {
   height: $header-height;
 
@@ -60,4 +62,7 @@ header.top-header > nav{
   max-width: 1010px;
   margin: 0 auto;
   padding-top: 40px;
+  @media screen and (max-width: $screen-tablet){
+    padding-top: 0;
+  }
 }

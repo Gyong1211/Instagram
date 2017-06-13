@@ -19,3 +19,5 @@ header.top-header > nav { height: 83px; padding: 0 10px; border-bottom: 1px soli
 .nav-right a { padding: 0 10px; }
 
 .container { max-width: 1010px; margin: 0 auto; padding-top: 40px; }
+
+@media screen and (max-width: 700px) { .container { padding-top: 0; } }
