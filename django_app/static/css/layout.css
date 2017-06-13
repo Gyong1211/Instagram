@@ -1,0 +1,58 @@
+header.top-header {
+  height: 83px;
+}
+
+header.top-header > nav {
+  height: 83px;
+  padding: 0 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
+  max-width: 1010px;
+  margin: 0 auto;
+}
+
+.nav-item {
+  height: 83px;
+  line-height: 83px;
+}
+
+.nav-item > a {
+  height: 83px;
+  line-height: 83px;
+  display: inline-block;
+}
+
+.nav-item > a > img {
+  vertical-align: middle;
+}
+
+.nav-left {
+  float: left;
+  margin-right: 20px;
+  width: 182px;
+}
+
+.nav-center {
+  float: left;
+  width: 147px;
+}
+
+@media screen and (max-width: 518px) {
+  .nav-center {
+    display: none;
+  }
+}
+
+.nav-right {
+  float: right;
+  width: 150px;
+}
+
+.nav-right a {
+  padding: 0 10px;
+}
+
+.container {
+  max-width: 1010px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
