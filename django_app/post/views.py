@@ -1,3 +1,4 @@
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 from member.models import User
@@ -18,7 +19,15 @@ def post_list(request):
 
 
 def post_detail(request, post_pk):
-    post = Post.objects.get(id=post_pk)
+    try:
+        post = Post.objects.get(id=post_pk)
+    except Post.DoesNotExist as e:
+        # 1. 404 Notfound를 출력한다.
+        # return HttpResponseNotFound('Post Not found, detail: {}'.format(e))
+
+        # 2. post_list view로 돌아간다
+        return redirect('post:post_list')
+
     comments = post.comment_set.all()
     context = {
         'post': post,
@@ -40,7 +49,7 @@ def post_create(request):
                     post=post,
                     content=comment,
                 )
-            return redirect('post_list')
+            return redirect('post:post_list')
 
         else:
             context = {
@@ -79,7 +88,7 @@ def post_modify(request, post_pk):
         if forms.is_valid():
             post.image = request.FILES['image']
             post.save()
-            return redirect('post_detail', post_pk=post.id)
+            return redirect('post:post_detail', post_pk=post.id)
 
 
 def post_delete(request, post_pk):
@@ -92,3 +101,18 @@ def post_delete(request, post_pk):
 
     elif request.method == 'GET':
         return render(request, 'post/post_delete.html')
+
+
+def comment_create(request, post_pk):
+    # POST요청을 받아 Comment객체를 생성 후 post_detail페이지로 redirect
+    pass
+
+
+def comment_modify(request, post_pk):
+    # 수정
+    pass
+
+
+def comment_delete(request, post_pk, comment_pk):
+    # POST요청을 받아 Comment객체를 delete, 이후 post_detail페이지로 redirect
+    pass
