@@ -16,23 +16,24 @@
             <img src="" alt="">
         </a>
         <a href="#">
-      <img src="" alt="">
-    </a>
-  </div>
-  <p>좋아요 {{ post.like_count }}개</p>
-  <div class="post-comment-container">
-    {% for comment in post.comment_set.all %}
-    <div class="post-comment">
-      <a href="" class="comment-author">{{comment.author}}</a>
-      <span class="comment-content">{{comment.content}}</span>
-      <a href="" class="comment-tag"></a>
-      <a href="" class="comment-tag"></a>
-      <a href="" class="comment-tag"></a>
-      {% endfor %}
+            <img src="" alt="">
+        </a>
     </div>
-  </div>
-  <p class="created">{{post.created_date}}</p>
-  <form action="">
-    <input type="text" placeholder="댓글달기">
-  </form>
+    <p>좋아요 {{ post.like_count }}개</p>
+    <div class="post-comment-container">
+        {% for comment in post.comment_set.all %}
+        <div class="post-comment">
+            <a href="" class="comment-author">{{comment.author}}</a>
+            <span class="comment-content">{{comment.content}}</span>
+            <a href="" class="comment-tag"></a>
+            <a href="" class="comment-tag"></a>
+            <a href="" class="comment-tag"></a>
+        </div>
+      {% endfor %}
+
+    </div>
+    <p class="created">{{post.created_date}}</p>
+    <form action="">
+        <input type="text" placeholder="댓글달기">
+    </form>
 </article>
