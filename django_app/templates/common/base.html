@@ -44,11 +44,13 @@
                     로그아웃
                 </a>
                 {% else %}
+                <form action="{% url 'member:login' %}" method="POST" class="login-container">
+                    {% csrf_token %}
+                    {{form}}
+                    <button type="submit">Login</button>
+                </form>
                 <a href="{% url 'member:signup' %}" class="btn">
                     회원가입
-                </a>
-                <a href="{% url 'member:login' %}" class="btn">
-                    로그인
                 </a>
                 {% endif %}
             </div>

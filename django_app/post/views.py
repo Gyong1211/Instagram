@@ -2,7 +2,7 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
-
+from member.forms import LoginForm
 from member.models import User
 from .forms import CreatePost, ModifyPost
 from .models import Post, Comment
@@ -14,8 +14,10 @@ def post_list(request):
 
     # 각 포스트에 대해 최대 4개까지의 댓글을 보여주도록 템플릿에 설정
     posts = Post.objects.all()
+    form = LoginForm()
     context = {
         'posts': posts,
+        'form': form,
     }
     return render(request, 'post/post_list.html', context=context)
 
@@ -30,13 +32,13 @@ def post_detail(request, post_pk):
         # 2. post_list view로 돌아간다
         url = reverse('post:post_list')
         return HttpResponseRedirect(url)
-        #위 2줄은 return redirect('post:post_list')와 같다.
+        # 위 2줄은 return redirect('post:post_list')와 같다.
     template = loader.get_template('post/post_detail.html')
 
     context = {
         'post': post,
     }
-    rendered_string = template.render(context = context, request = request)
+    rendered_string = template.render(context=context, request=request)
     return HttpResponse(rendered_string)
     # return render(request, 'post/post_detail.html', context=context)
 
