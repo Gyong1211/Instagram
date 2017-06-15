@@ -11,7 +11,13 @@
         </div>
     </header>
     <div class="post-photo-container">
+        {% if type == 'list' %}
+        <a href="{% url 'post:post_detail' post_pk=post.pk %}">
+            <img src="{{post.image.url}}" alt="">
+        </a>
+        {% else %}
         <img src="{{post.image.url}}" alt="">
+        {% endif %}
     </div>
     <div class="post-btn-container">
         <a href="#">

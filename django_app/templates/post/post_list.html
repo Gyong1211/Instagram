@@ -2,6 +2,6 @@
 
 {% block content %}
 {% for post in posts %}
-    {% include 'include/post.html' %}
+    {% include 'include/post.html' with type='list'%}
 {% endfor %}
 {% endblock %}
