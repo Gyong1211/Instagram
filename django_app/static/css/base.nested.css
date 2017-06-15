@@ -11,8 +11,8 @@ input[type=text], input[type=password] {
   padding: 3px 10px 3px 26px;
   background-color: #fafafa; }
 
-.test {
-  padding: 10px;
-  color: white;
-  background-color: red;
-  font-size: 14px; }
+a {
+  color: #262626;
+  text-decoration: none; }
+  a:hover {
+    text-decoration: underline; }

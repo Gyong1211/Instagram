@@ -1,6 +1,10 @@
-header.top-header { height: 83px; }
+header.top-header { border-bottom: 1px solid rgba(0, 0, 0, 0.0975); }
 
-header.top-header > nav { height: 83px; padding: 0 10px; border-bottom: 1px solid rgba(0, 0, 0, 0.0975); max-width: 1010px; margin: 0 auto; }
+header.top-header > nav:nth-child(1) { height: 83px; padding: 0 10px; max-width: 1010px; margin: 0 auto; }
+
+header.top-header > nav:nth-child(2) { border-top: 1px solid rgba(0, 0, 0, 0.0975); padding: 8px 0; text-align: right; }
+
+header.top-header > nav:nth-child(2) > div { max-width: 1010px; margin: 0 auto; }
 
 .nav-item { height: 83px; line-height: 83px; }
 
