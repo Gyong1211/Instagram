@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login as django_login
+from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -6,8 +6,8 @@ from django.shortcuts import render, redirect
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username'],
-        password = request.POST['password'],
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(
             username=username,
             password=password
@@ -20,6 +20,11 @@ def login(request):
 
 
     else:
-        if request.user.is_autenticated:
+        if request.user.is_authenticated:
             return redirect('post:post_list')
         return render(request, 'member/login.html')
+
+
+def logout(request):
+    django_logout(request)
+    return redirect('post:post_list')
