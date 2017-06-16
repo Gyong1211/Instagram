@@ -53,3 +53,4 @@ class SignupForm(forms.Form):
             nickname=nickname,
         )
         return user
+

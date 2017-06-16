@@ -32,4 +32,4 @@ form.form-inline-login input { padding: 5px 8px; font-size: 11px; margin-right: 
 
 @media screen and (max-width: 700px) { .container { padding-top: 0; } }
 
-.container > .content { padding-left: 10px; padding-right: 10px; }
+.container > .content { padding: 10px; }

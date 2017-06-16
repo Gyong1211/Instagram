@@ -65,5 +65,4 @@ form.form-inline-login {
       padding-top: 0; } }
 
 .container > .content {
-  padding-left: 10px;
-  padding-right: 10px; }
+  padding: 10px; }

@@ -1,10 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from member.forms import LoginForm
 from member.models import User
-from .forms import CreatePost, ModifyPost
+from post.forms import CreatePost, ModifyPost, PostForm
 from .models import Post, Comment
 
 
@@ -44,26 +45,32 @@ def post_detail(request, post_pk):
     return HttpResponse(rendered_string)
     # return render(request, 'post/post_detail.html', context=context)
 
-
+@login_required
 def post_create(request):
     if request.method == 'POST':
-        forms = CreatePost(request.POST, request.FILES)
-        if forms.is_valid():
-            user = User.objects.first()
-            post = Post.objects.create(author=user, image=request.FILES['image'])
-            comment_string = forms.cleaned_data['comment']
-            # if not comment_string == '':
-            #     Comment.objects.create(
-            #         author=user,
-            #         post=post,
-            #         content=comment_string,
-            #     )
-            if comment_string:
-                post.comment_set.create(
-                    author=user,
-                    content=comment_string,
-                )
+        # forms = CreatePost(request.POST, request.FILES)
+        # if forms.is_valid():
+        #     user = User.objects.first()
+        #     post = Post.objects.create(author=user, image=request.FILES['image'])
+        #     comment_string = forms.cleaned_data['comment']
+        #     # if not comment_string == '':
+        #     #     Comment.objects.create(
+        #     #         author=user,
+        #     #         post=post,
+        #     #         content=comment_string,
+        #     #     )
+        #     if comment_string:
+        #         post.comment_set.create(
+        #             author=user,
+        #             content=comment_string,
+        #         )
+        #     return redirect('post:post_list')
 
+        form = PostForm(data = request.POST, files = request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
             return redirect('post:post_list')
 
         else:
@@ -73,7 +80,7 @@ def post_create(request):
             return render(request, 'post/post_create.html', context=context)
 
     else:
-        forms = CreatePost()
+        forms = PostForm()
         context = {
             'forms': forms,
         }
