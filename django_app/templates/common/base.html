@@ -44,9 +44,9 @@
                     로그아웃
                 </a>
                 {% else %}
-                <form action="{% url 'member:login' %}" method="POST" class="login-container">
+                <form action="{% url 'member:login' %}" method="POST" class="form-inline-login">
                     {% csrf_token %}
-                    {{loginform}}
+                    {{login_form}}
                     <button type="submit">Login</button>
                 </form>
                 <a href="{% url 'member:signup' %}" class="btn">

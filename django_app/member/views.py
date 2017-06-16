@@ -34,9 +34,9 @@ def login(request):
     else:
         if request.user.is_authenticated:
             return redirect('post:post_list')
-            loginform = LoginForm()
+        loginform = LoginForm()
         context = {
-            'form':loginform,
+            'loginform':loginform,
         }
         return render(request, 'member/login.html', context=context)
 
@@ -54,11 +54,6 @@ def signup(request):
             password1 = signupform.cleaned_data['password1']
             password2 = signupform.cleaned_data['password2']
 
-            if User.objects.filter(username=username).exists():
-                return HttpResponse('이미 있는 Username입니다.')
-            elif password1 != password2:
-                return HttpResponse('비밀번호 확인이 틀렸습니다.')
-
             user = User.objects.create_user(
                 username=username,
                 password=password1
@@ -68,10 +63,8 @@ def signup(request):
 
 
     else:
-        form = LoginForm()
-    signupform = SignupForm()
+        signupform = SignupForm()
     context = {
-        'form': form,
         'signupform': signupform,
     }
     return render(request, 'member/signup.html', context=context)

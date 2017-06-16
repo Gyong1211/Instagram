@@ -45,6 +45,17 @@ header.top-header > nav:nth-child(2) {
   .nav-right a {
     padding: 0 10px; }
 
+form.form-inline-login {
+  display: inline-block;
+  font-size: 11px; }
+  form.form-inline-login label {
+    padding: 4px 8px;
+    font-size: 10px; }
+  form.form-inline-login input {
+    padding: 5px 8px;
+    font-size: 11px;
+    margin-right: 6px; }
+
 .container {
   max-width: 1010px;
   margin: 0 auto;
@@ -56,6 +67,3 @@ header.top-header > nav:nth-child(2) {
 .container > .content {
   padding-left: 10px;
   padding-right: 10px; }
-
-.login-container {
-  display: inline-block; }
