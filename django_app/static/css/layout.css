@@ -73,6 +73,11 @@ header.top-header > nav:nth-child(2) > div {
   }
 }
 
+.container > .content {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .login-container {
   display: inline-block;
 }

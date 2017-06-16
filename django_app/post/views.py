@@ -14,15 +14,16 @@ def post_list(request):
 
     # 각 포스트에 대해 최대 4개까지의 댓글을 보여주도록 템플릿에 설정
     posts = Post.objects.all()
-    form = LoginForm()
+    loginform = LoginForm()
     context = {
         'posts': posts,
-        'form': form,
+        'loginform': loginform,
     }
     return render(request, 'post/post_list.html', context=context)
 
 
 def post_detail(request, post_pk):
+    loginform = LoginForm()
     try:
         post = Post.objects.get(id=post_pk)
     except Post.DoesNotExist as e:
@@ -37,6 +38,7 @@ def post_detail(request, post_pk):
 
     context = {
         'post': post,
+        'loginform':loginform
     }
     rendered_string = template.render(context=context, request=request)
     return HttpResponse(rendered_string)

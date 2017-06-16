@@ -5,3 +5,5 @@ input[type=text], input[type=password] { border: 1px solid #dbdbdb; border-radiu
 a { color: #262626; text-decoration: none; }
 
 a:hover { text-decoration: underline; }
+
+ul, ol { margin: 0; padding: 0; list-style-type: none; }

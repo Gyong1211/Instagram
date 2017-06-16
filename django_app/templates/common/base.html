@@ -46,7 +46,7 @@
                 {% else %}
                 <form action="{% url 'member:login' %}" method="POST" class="login-container">
                     {% csrf_token %}
-                    {{form}}
+                    {{loginform}}
                     <button type="submit">Login</button>
                 </form>
                 <a href="{% url 'member:signup' %}" class="btn">

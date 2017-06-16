@@ -5,3 +5,24 @@
   border: 1px solid $color-border;
   border-radius: 3px;
 }
+
+.field-wrapper {
+  ul.errors {
+    font-size: 13px;
+    color: red;
+    font-weight: bold;
+  }
+  label {
+    font-size: 11px;
+  }
+  input[type=text], input[type=password] {
+    width:100%;
+    box-sizing: border-box;
+  }
+  p.help {
+    font-size: 10px;
+    color: #ccc;
+    margin-top: 2px;
+    margin-bottom: 0;
+  }
+}
