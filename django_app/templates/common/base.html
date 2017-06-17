@@ -1,69 +1,69 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-    <link rel="stylesheet" href="{% static 'css/post.css' %}">
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <title>Document</title>
-</head>
-<body>
-<wrap id="wrap">
-    <header class="top-header">
-        <nav>
-            <div class="nav-left nav-item">
-                <a href="{% url 'post:post_list' %}">
-                    <img src="{% static 'images/logo.png' %}" alt="">
-                </a>
-            </div>
-            <div class="nav-center nav-item">
-                <input type="text" placeholder="검색">
-            </div>
-            <div class="nav-right nav-item">
-                <a href="#">
-                    <img src="{%static 'images/icon_explore.png' %}" alt="">
-                </a>
-                <a href="#">
-                    <img src="{%static 'images/icon_heart.png' %}" alt="">
-                </a>
-                <a href="#">
-                    <img src="{%static 'images/icon_profile.png' %}" alt="">
-                </a>
-            </div>
-        </nav>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+        <link rel="stylesheet" href="{% static 'css/post.css' %}">
+        <link rel="stylesheet" href="{% static 'css/common.css' %}">
+        <title>Document</title>
+    </head>
+    <body>
+        <wrap id="wrap">
+        <header class="top-header">
+            <nav>
+                <div class="nav-left nav-item">
+                    <a href="{% url 'post:post_list' %}">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                    </a>
+                </div>
+                <div class="nav-center nav-item">
+                    <input type="text" placeholder="검색">
+                </div>
+                <div class="nav-right nav-item">
+                    <a href="#">
+                        <img src="{%static 'images/icon_explore.png' %}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{%static 'images/icon_heart.png' %}" alt="">
+                    </a>
+                    <a href="#">
+                        <img src="{%static 'images/icon_profile.png' %}" alt="">
+                    </a>
+                </div>
+            </nav>
 
 
-        <nav>
-            <div>{% if user.is_authenticated %}
-                {{user}}가 로그인 중입니다. <a href="{% url 'member:logout' %}" class="btn">
-                    로그아웃
-                </a>
-                {% else %}
-                <form action="{% url 'member:login' %}" method="POST" class="form-inline-login">
-                    {% csrf_token %}
-                    {{login_form}}
-                    <button type="submit">Login</button>
-                </form>
-                <a href="{% url 'member:signup' %}" class="btn">
-                    회원가입
-                </a>
-                {% endif %}
-            </div>
-        </nav>
+            <nav>
+                <div>{% if user.is_authenticated %}
+                    {{user}}가 로그인 중입니다. <a href="{% url 'member:logout' %}" class="btn">
+                        로그아웃
+                    </a>
+                    {% else %}
+                    <form action="{% url 'member:login' %}" method="POST" class="form-inline-login">
+                        {% csrf_token %}
+                        {{login_form}}
+                        <button type="submit">Login</button>
+                    </form>
+                    <a href="{% url 'member:signup' %}" class="btn">
+                        회원가입
+                    </a>
+                    {% endif %}
+                </div>
+            </nav>
 
-    </header>
+        </header>
 
 
 
-    <div class="container">
-        {% block content %}
-        {% endblock %}
-    </div>
-</wrap>
-</body>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+        </wrap>
+    </body>
 </html>
