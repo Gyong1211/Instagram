@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from member.forms import LoginForm
-from member.models import User
 from post.forms import CreatePost, ModifyPost, PostForm
 from .models import Post, Comment
 
@@ -75,7 +74,7 @@ def post_create(request):
 
         else:
             context = {
-                'forms': forms
+                'forms': form
             }
             return render(request, 'post/post_create.html', context=context)
 

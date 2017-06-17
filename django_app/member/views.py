@@ -23,11 +23,14 @@ def login(request):
         if loginform.is_valid():
             user = loginform.cleaned_data['user']
             django_login(request, user)
+            next = request.GET.get('next')
+            if next:
+                return redirect(next)
             return redirect('post:post_list')
         else:
             loginform = LoginForm()
             context = {
-                'loginform':loginform,
+                'login_form':loginform,
             }
             return render(request,'member/login.html', context=context)
 
@@ -36,7 +39,7 @@ def login(request):
             return redirect('post:post_list')
         loginform = LoginForm()
         context = {
-            'loginform':loginform,
+            'login_form':loginform,
         }
         return render(request, 'member/login.html', context=context)
 
@@ -58,6 +61,6 @@ def signup(request):
     else:
         signupform = SignupForm()
     context = {
-        'signupform': signupform,
+        'signup_form': signupform,
     }
     return render(request, 'member/signup.html', context=context)
