@@ -45,6 +45,9 @@ class Post(models.Model):
     def like_count(self):
         return self.like_users.count()
 
+    class Meta:
+        ordering = ['-pk',]
+
 
 class PostLike(models.Model):
     user = models.ForeignKey(

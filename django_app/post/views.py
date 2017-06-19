@@ -38,11 +38,12 @@ def post_detail(request, post_pk):
 
     context = {
         'post': post,
-        'loginform':loginform
+        'loginform': loginform
     }
     rendered_string = template.render(context=context, request=request)
     return HttpResponse(rendered_string)
     # return render(request, 'post/post_detail.html', context=context)
+
 
 @login_required
 def post_create(request):
@@ -65,12 +66,16 @@ def post_create(request):
         #         )
         #     return redirect('post:post_list')
 
-        form = PostForm(data = request.POST, files = request.FILES)
+        form = PostForm(data=request.POST, files=request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('post:post_list')
+            post = form.save(
+                author=request.user
+            )
+
+            # comment_string = form.cleaned_data['comment']
+            # if comment_string:
+            #     post.comment_set.create(author=request.user, content=comment_string)
+            return redirect('post:post_detail',post_pk=post.pk)
 
         else:
             context = {

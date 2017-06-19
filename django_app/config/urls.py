@@ -17,14 +17,19 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
+from . import views
+
+from django.views.generic import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^post/', include('post.urls')),
     url(r'^member/', include('member.urls')),
+    url(r'^$', views.index, name='index')
+    # url(r'^$', RedirectView.as_view(pattern_name='post:post_list')),
 ]
 
 urlpatterns += static(
     settings.MEDIA_URL,
-    document_root = settings.MEDIA_ROOT
+    document_root=settings.MEDIA_ROOT
 )
