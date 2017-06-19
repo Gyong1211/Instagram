@@ -1,4 +1,4 @@
-header.top-header { border-bottom: 1px solid rgba(0, 0, 0, 0.0975); }
+header.top-header { border-bottom: 1px solid rgba(0, 0, 0, 0.0975); background-color: #fff; }
 
 header.top-header > nav:nth-child(1) { height: 83px; padding: 0 10px; max-width: 1010px; margin: 0 auto; }
 

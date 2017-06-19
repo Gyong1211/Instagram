@@ -1,9 +1,10 @@
+{% load static %}
 <article class="post">
     <header>
         <div class="post-header-left">
             <a href="#">
                 <img src="" alt="">
-                <span>{{post.author}}</span>
+                <span  class="header-author">{{post.author}}</span>
             </a>
         </div>
         <div class="post-header-right">
@@ -27,21 +28,37 @@
             <img src="" alt="">
         </a>
     </div>
-    <p>좋아요 {{ post.like_count }}개</p>
-    <div class="post-comment-container">
-        {% for comment in post.comment_set.all %}
-        <div class="post-comment">
-            <a href="" class="comment-author">{{comment.author}}</a>
-            <span class="comment-content">{{comment.content}}</span>
-            <a href="" class="comment-tag"></a>
-            <a href="" class="comment-tag"></a>
-            <a href="" class="comment-tag"></a>
-        </div>
-        {% endfor %}
+<div class="post-bottom">
+  <div class="post-btn-container">
 
-    </div>
-    <p class="created">{{post.created_date}}</p>
-    <form action="">
-        <input type="text" placeholder="댓글달기">
-    </form>
+      <div class="btn-left">
+          <a href="#">
+              <img src="{% static 'images/post_heart.png' %}" alt="">
+          </a>
+          <a href="#">
+              <img src="{% static 'images/post_comment.png' %}" alt="">
+          </a>
+      </div>
+      <div class="btn-right">
+          <a href="{% url 'post:post_modify' post_pk=post.pk" class="btn">수정하기</a>
+          <a href="{% url 'post:post_delete' post_pk=post.pk" class="btn">삭제하기</a>
+      </div>
+  </div>
+  <p>좋아요 {{ post.like_count }}개</p>
+  <div class="post-comment-container">
+      {% if post.my_comment %}
+          {% include 'include/post_comment.html' with comment=post.my_comment style='red'%}
+      {% endif %}
+      {% for comment in post.comment_set.all %}
+          {% if comment != post.my_comment %}
+              {% include 'include/post_comment.html' %}
+          {% endif %}
+      {% endfor %}
+
+  </div>
+  <p class="created">{{post.created_date}}</p>
+  <form action="">
+      <input type="text" placeholder="댓글달기" class="input-comment">
+  </form>
+</div>
 </article>

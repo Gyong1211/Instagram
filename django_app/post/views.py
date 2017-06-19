@@ -75,7 +75,7 @@ def post_create(request):
             # comment_string = form.cleaned_data['comment']
             # if comment_string:
             #     post.comment_set.create(author=request.user, content=comment_string)
-            return redirect('post:post_detail',post_pk=post.pk)
+            return redirect('post:post_detail', post_pk=post.pk)
 
         else:
             context = {
@@ -94,20 +94,30 @@ def post_create(request):
 def post_modify(request, post_pk):
     post = Post.objects.get(id=post_pk)
 
-    if request.method == 'GET':
-        forms = ModifyPost(initial={'image': post.image})
-        context = {
-            'forms': forms,
-            'post': post,
-        }
-        return render(request, 'post/post_modify.html', context=context)
-
-    elif request.method == 'POST':
-        forms = ModifyPost(request.POST, request.FILES)
-        if forms.is_valid():
-            post.image = request.FILES['image']
-            post.save()
-            return redirect('post:post_detail', post_pk=post.id)
+    # if request.method == 'GET':
+    #     forms = ModifyPost(initial={'image': post.image})
+    #     context = {
+    #         'forms': forms,
+    #         'post': post,
+    #     }
+    #     return render(request, 'post/post_modify.html', context=context)
+    #
+    # elif request.method == 'POST':
+    #     forms = ModifyPost(request.POST, request.FILES)
+    #     if forms.is_valid():
+    #         post.image = request.FILES['image']
+    #         post.save()
+    #         return redirect('post:post_detail', post_pk=post.id)
+    if request.method == 'POST':
+        form = PostForm(data=request.POST, files=request.FILES, instance=post)
+        form.save()
+        return redirect('post:post_detail', post_pk)
+    else:
+        form = PostForm(instance=post)
+    context = {
+        'forms': form,
+    }
+    return render(request, 'post/post_create.html', context=context)
 
 
 def post_delete(request, post_pk):
