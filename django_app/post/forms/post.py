@@ -47,4 +47,3 @@ class PostForm(forms.ModelForm):
                 )
             instance.save()
         return instance
-

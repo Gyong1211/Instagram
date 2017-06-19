@@ -1,4 +1,4 @@
-.btn { padding: 4px 10px; border: 1px solid rgba(0, 0, 0, 0.0975); border-radius: 3px; }
+.btn { padding: 4px 10px; border: 1px solid rgba(0, 0, 0, 0.0975); border-radius: 3px; background-color: #fff; }
 
 .field-wrapper ul.errors { font-size: 13px; color: red; font-weight: bold; }
 

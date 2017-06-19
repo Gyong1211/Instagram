@@ -4,7 +4,7 @@
         <div class="post-header-left">
             <a href="#">
                 <img src="" alt="">
-                <span  class="header-author">{{post.author}}</span>
+                <span class="header-author">{{post.author}}</span>
             </a>
         </div>
         <div class="post-header-right">
@@ -28,41 +28,43 @@
             <img src="" alt="">
         </a>
     </div>
-<div class="post-bottom">
-  <div class="post-btn-container clearfix">
-      <div class="btn-left">
-          <a href="#">
-              <img src="{% static 'images/post_heart.png' %}" alt="">
-          </a>
-          <a href="#">
-              <img src="{% static 'images/post_comment.png' %}" alt="">
-          </a>
-      </div>
-      {% if user == post.author %}
-      <div class="btn-right">
-          <a href="{% url 'post:post_modify' post_pk=post.pk %}" class="btn">수정하기</a>
-          <form action="{% url 'post:post_delete' post_pk=post.pk %}" method="POST" class="form-inline">
-              {% csrf_token %}
-              <button type="submit" class="btn">삭제하기</button>
-          </form>
-      </div>
-      {% endif %}
-  </div>
-  <p>좋아요 {{ post.like_count }}개</p>
-  <div class="post-comment-container">
-      {% if post.my_comment %}
-          {% include 'include/post_comment.html' with comment=post.my_comment style='red'%}
-      {% endif %}
-      {% for comment in post.comment_set.all %}
-          {% if comment != post.my_comment %}
-              {% include 'include/post_comment.html' %}
-          {% endif %}
-      {% endfor %}
+    <div class="post-bottom">
+        <div class="post-btn-container clearfix">
+            <div class="btn-left">
+                <a href="#">
+                    <img src="{% static 'images/post_heart.png' %}" alt="">
+                </a>
+                <a href="#">
+                    <img src="{% static 'images/post_comment.png' %}" alt="">
+                </a>
+            </div>
+            {% if user == post.author %}
+            <div class="btn-right">
+                <a href="{% url 'post:post_modify' post_pk=post.pk %}" class="btn">수정하기</a>
+                <form action="{% url 'post:post_delete' post_pk=post.pk %}" method="POST" class="form-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">삭제하기</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        <p>좋아요 {{ post.like_count }}개</p>
+        <div class="post-comment-container">
+            {% if post.my_comment %}
+                {% include 'include/post_comment.html' with comment=post.my_comment style='red'%}
+            {% endif %}
+            {% for comment in post.comment_set.all %}
+                {% if comment != post.my_comment %}
+                    {% include 'include/post_comment.html' %}
+                {% endif %}
+            {% endfor %}
 
-  </div>
-  <p class="created">{{post.created_date}}</p>
-  <form action="">
-      <input type="text" placeholder="댓글달기" class="input-comment">
-  </form>
-</div>
+        </div>
+        <p class="created">{{post.created_date}}</p>
+        <form action="{% url 'post:comment_create' post_pk=post.pk %}" method="POST">
+            {% csrf_token %}
+            {% include 'include/field_set.html' with form=comment_form %}
+            <button type="submit">등록</button>
+        </form>
+    </div>
 </article>

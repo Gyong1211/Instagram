@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -5,8 +6,10 @@ from django.template import loader
 from django.urls import reverse
 from member.forms import LoginForm
 from post.decorators import post_owner
-from post.forms import PostForm
+from post.forms import PostForm, CommentForm
 from .models import Post, Comment
+
+User = get_user_model()
 
 
 def post_list(request):
@@ -15,18 +18,18 @@ def post_list(request):
 
     # 각 포스트에 대해 최대 4개까지의 댓글을 보여주도록 템플릿에 설정
     posts = Post.objects.all()
-    loginform = LoginForm()
+    comment_form = CommentForm()
     context = {
         'posts': posts,
-        'loginform': loginform,
+        'comment_form': comment_form,
     }
     return render(request, 'post/post_list.html', context=context)
 
 
 def post_detail(request, post_pk):
-    loginform = LoginForm()
     try:
         post = Post.objects.get(id=post_pk)
+        comment_form = CommentForm()
     except Post.DoesNotExist as e:
         # 1. 404 Notfound를 출력한다.
         # return HttpResponseNotFound('Post Not found, detail: {}'.format(e))
@@ -39,7 +42,7 @@ def post_detail(request, post_pk):
 
     context = {
         'post': post,
-        'loginform': loginform
+        'comment_form': comment_form,
     }
     rendered_string = template.render(context=context, request=request)
     return HttpResponse(rendered_string)
@@ -85,16 +88,17 @@ def post_create(request):
             return render(request, 'post/post_create.html', context=context)
 
     else:
-        forms = PostForm()
+        form = PostForm()
         context = {
-            'form': forms,
+            'form': form,
         }
         return render(request, 'post/post_create.html', context=context)
+
 
 @post_owner
 @login_required
 def post_modify(request, post_pk):
-    post = Post.objects.get(id=post_pk)
+    post = Post.objects.get(pk=post_pk)
 
     # if request.method == 'GET':
     #     forms = ModifyPost(initial={'image': post.image})
@@ -121,23 +125,34 @@ def post_modify(request, post_pk):
     }
     return render(request, 'post/post_modify.html', context=context)
 
+
 @post_owner
 @login_required
 def post_delete(request, post_pk):
-    # post_pk에 해당하는 Post에 대한 delete요청만을 받음
-    # 처리완료후에는 post_list페이지로 redirect
     post = get_object_or_404(Post, id=post_pk)
     post.delete()
     return redirect('post:post_list')
 
 
-
 def comment_create(request, post_pk):
-    # POST요청을 받아 Comment객체를 생성 후 post_detail페이지로 redirect
-    pass
+    # post = Post.objects.get(pk=post_pk)
+    # form = CommentForm(data=request.POST)
+    # user = request.user
+    # if form.is_valid():
+    #     Comment.objects.create(post=post, author=user, content=form.cleaned_data['content'])
+    # return redirect('post:post_detail', post_pk)
+    post = Post.objects.get(pk=post_pk)
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        form.save(
+            author=request.user,
+            post=post,
+        )
+        return redirect('post:post_detail', post_pk)
+    # else:
+    #     return redirect('post:post_detail', post_pk)
 
-
-def comment_modify(request, post_pk):
+def comment_modify(request, post_pk, comment_pk):
     # 수정
     pass
 
