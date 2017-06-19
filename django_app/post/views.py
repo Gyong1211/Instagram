@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.urls import reverse
 from member.forms import LoginForm
@@ -121,17 +121,15 @@ def post_modify(request, post_pk):
     }
     return render(request, 'post/post_modify.html', context=context)
 
-
+@post_owner
+@login_required
 def post_delete(request, post_pk):
     # post_pk에 해당하는 Post에 대한 delete요청만을 받음
     # 처리완료후에는 post_list페이지로 redirect
-    post = Post.objects.get(id=post_pk)
-    if request.method == 'POST':
-        post.delete()
-        return redirect('post_list')
+    post = get_object_or_404(Post, id=post_pk)
+    post.delete()
+    return redirect('post:post_list')
 
-    elif request.method == 'GET':
-        return render(request, 'post/post_delete.html')
 
 
 def comment_create(request, post_pk):
