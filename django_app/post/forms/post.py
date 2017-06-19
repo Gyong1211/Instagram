@@ -1,6 +1,9 @@
 from django import forms
+from django.contrib.auth import get_user_model
 
 from ..models import Post, Comment
+
+User = get_user_model()
 
 
 class PostForm(forms.ModelForm):
@@ -26,7 +29,9 @@ class PostForm(forms.ModelForm):
         commit = kwargs.get('commit', True)
         author = kwargs.pop('author', None)
 
-        self.instance.author = author
+        if not self.instance.pk or isinstance(author, User):
+            self.instance.author = author
+
         instance = super().save(**kwargs)
 
         comment_string = self.cleaned_data['comment']
@@ -37,18 +42,9 @@ class PostForm(forms.ModelForm):
             else:
                 instance.my_comment = Comment.objects.create(
                     post=instance,
-                    author=author,
+                    author=instance.author,
                     content=comment_string
                 )
             instance.save()
         return instance
 
-
-# 내가 쓴거
-class CreatePost(forms.Form):
-    image = forms.ImageField()
-    comment = forms.CharField(max_length=100, required=False)
-
-
-class ModifyPost(forms.Form):
-    image = forms.ImageField()

@@ -29,8 +29,7 @@
         </a>
     </div>
 <div class="post-bottom">
-  <div class="post-btn-container">
-
+  <div class="post-btn-container clearfix">
       <div class="btn-left">
           <a href="#">
               <img src="{% static 'images/post_heart.png' %}" alt="">
@@ -39,10 +38,12 @@
               <img src="{% static 'images/post_comment.png' %}" alt="">
           </a>
       </div>
+      {% if user == post.author %}
       <div class="btn-right">
-          <a href="{% url 'post:post_modify' post_pk=post.pk" class="btn">수정하기</a>
-          <a href="{% url 'post:post_delete' post_pk=post.pk" class="btn">삭제하기</a>
+          <a href="{% url 'post:post_modify' post_pk=post.pk %}" class="btn">수정하기</a>
+          <a href="{% url 'post:post_delete' post_pk=post.pk %}" class="btn">삭제하기</a>
       </div>
+      {% endif %}
   </div>
   <p>좋아요 {{ post.like_count }}개</p>
   <div class="post-comment-container">

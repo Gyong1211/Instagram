@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from member.forms import LoginForm
-from post.forms import CreatePost, ModifyPost, PostForm
+from post.decorators import post_owner
+from post.forms import PostForm
 from .models import Post, Comment
 
 
@@ -79,18 +80,19 @@ def post_create(request):
 
         else:
             context = {
-                'forms': form
+                'form': form
             }
             return render(request, 'post/post_create.html', context=context)
 
     else:
         forms = PostForm()
         context = {
-            'forms': forms,
+            'form': forms,
         }
         return render(request, 'post/post_create.html', context=context)
 
-
+@post_owner
+@login_required
 def post_modify(request, post_pk):
     post = Post.objects.get(id=post_pk)
 
@@ -115,9 +117,9 @@ def post_modify(request, post_pk):
     else:
         form = PostForm(instance=post)
     context = {
-        'forms': form,
+        'form': form,
     }
-    return render(request, 'post/post_create.html', context=context)
+    return render(request, 'post/post_modify.html', context=context)
 
 
 def post_delete(request, post_pk):
