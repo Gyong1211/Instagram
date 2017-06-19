@@ -26,6 +26,12 @@ class Post(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField('Tag', blank=True)
+    my_comment = models.OneToOneField(
+        'Comment',
+        blank=True,
+        null=True,
+        related_name='+'
+    )
 
     def __str__(self):
         return '{}의 포스트'.format(self.author.username)
