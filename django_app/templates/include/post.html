@@ -51,12 +51,12 @@
         <p>좋아요 {{ post.like_count }}개</p>
         <div class="post-comment-container">
             {% if post.my_comment %}
-                {% include 'include/post_comment.html' with comment=post.my_comment style='red'%}
+            {% include 'include/post_comment.html' with comment=post.my_comment style='red'%}
             {% endif %}
             {% for comment in post.comment_set.all %}
-                {% if comment != post.my_comment %}
-                    {% include 'include/post_comment.html' %}
-                {% endif %}
+            {% if comment != post.my_comment %}
+            {% include 'include/post_comment.html' %}
+            {% endif %}
             {% endfor %}
 
         </div>
