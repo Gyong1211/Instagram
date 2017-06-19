@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.urls import reverse
 from member.forms import LoginForm
-from post.decorators import post_owner
+from post.decorators import post_owner, comment_owner
 from post.forms import PostForm, CommentForm
 from .models import Post, Comment
 
@@ -149,12 +149,24 @@ def comment_create(request, post_pk):
             post=post,
         )
         return redirect('post:post_detail', post_pk)
-    # else:
-    #     return redirect('post:post_detail', post_pk)
+        # else:
+        #     return redirect('post:post_detail', post_pk)
 
+@comment_owner
+@login_required
 def comment_modify(request, post_pk, comment_pk):
-    # 수정
-    pass
+    comment = Comment.objects.get(pk=comment_pk)
+    if request.method == 'POST':
+        form = CommentForm(data=request.POST, files=request.FILES, instance=comment)
+        if form.is_valid():
+            form.save(comment_pk=comment_pk)
+            return redirect('post:post_detail', post_pk)
+    else:
+        form = CommentForm(instance=comment)
+    context = {
+        'form': form,
+    }
+    return render(request, 'post/comment_modify.html', context=context)
 
 
 def comment_delete(request, post_pk, comment_pk):

@@ -1,4 +1,7 @@
 <div class="post-comment" {% if style == 'red' %} style="color:red" {% endif %}>
     <a href="" class="comment-author">{{comment.author}}</a>
     <span class="comment-content">{{comment.content}}</span>
+    {% if user == comment.author %}
+    <a href="{% url 'post:comment_modify' post_pk=post.pk comment_pk=comment.pk %}" class="btn">수정</a>
+    {% endif %}
 </div>

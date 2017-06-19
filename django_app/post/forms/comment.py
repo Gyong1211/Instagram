@@ -35,6 +35,9 @@ class CommentForm(forms.ModelForm):
         if isinstance(post, Post):
             self.instance.post = post
 
+        # cleaned_data를 사용하기 위해 views.comment_create에서  form.is_valid()를 써줘야했음
+        # 하지만 post_modify에서는 form.is_valid()를 사용하지 않음(why?)
+
         comment_string = self.cleaned_data['content']
         if commit and comment_string:
             if comment_pk:
