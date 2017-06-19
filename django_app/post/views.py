@@ -152,6 +152,7 @@ def comment_create(request, post_pk):
         # else:
         #     return redirect('post:post_detail', post_pk)
 
+
 @comment_owner
 @login_required
 def comment_modify(request, post_pk, comment_pk):
@@ -170,5 +171,6 @@ def comment_modify(request, post_pk, comment_pk):
 
 
 def comment_delete(request, post_pk, comment_pk):
-    # POST요청을 받아 Comment객체를 delete, 이후 post_detail페이지로 redirect
-    pass
+    comment = Comment.objects.get(pk=comment_pk)
+    comment.delete()
+    return redirect('post:post_detail', post_pk)
