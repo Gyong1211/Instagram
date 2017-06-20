@@ -7,7 +7,7 @@ from django.urls import reverse
 
 from post.decorators import post_owner
 from post.forms import PostForm, CommentForm
-from ..models import Post
+from ..models import Post, Tag
 
 User = get_user_model()
 
@@ -17,6 +17,7 @@ __all__ = (
     'post_create',
     'post_modify',
     'post_delete',
+    'hashtag_post_list',
 )
 
 def post_list(request):
@@ -144,3 +145,18 @@ def post_delete(request, post_pk):
 
 def post_anyway(request):
     return redirect('post:post_list')
+
+
+def hashtag_post_list(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    # posts = Post.objects.filter(comment__tags=tag) # 모든 댓글에 달린 Tag를 포함해서 검색하는 경우
+
+    posts = Post.objects.filter(my_comment__tags=tag)
+    posts_count = posts.count()
+
+    context = {
+        'tag':tag,
+        'posts':posts,
+        'posts_count':posts_count,
+    }
+    return render(request, 'post/hashtag_post_list.html', context=context)
