@@ -30,10 +30,21 @@ article.post {
     .post-btn-container {
       .btn-left{
         float: left;
+
+        .like-btn {
+          border: none;
+          background-color: rgba(255,255,255,0);
+          padding: 0;
+          margin: 0;
+          line-height: 0;
+        }
       }
       .btn-right {
         float: right;
       }
+    }
+    .like-user {
+      font-weight: bold;
     }
 
     p.comment{
@@ -43,7 +54,7 @@ article.post {
       > *{
         vertical-align: middle;
       }
-      
+
       .comment-author {
         font-weight: bold;
         margin-right: 3px;

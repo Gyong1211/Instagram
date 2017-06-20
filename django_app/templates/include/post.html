@@ -31,9 +31,16 @@
     <div class="post-bottom">
         <div class="post-btn-container clearfix">
             <div class="btn-left">
-                <a href="#">
-                    <img src="{% static 'images/post_heart.png' %}" alt="">
-                </a>
+                <form action="{% url 'post:post_like' post_pk=post.pk %}?next={{request.path}}#post-{{post.pk}}" method="POST" class="form-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="like-btn">
+                        {% if request.user not in post.like_users.all %}
+                        <img src="{% static 'images/post_unlike.png' %}" alt="">
+                        {% else %}
+                        <img src="{% static 'images/post_like.png' %}" alt="">
+                        {% endif %}
+                        </button>
+                </form>
                 <a href="#">
                     <img src="{% static 'images/post_comment.png' %}" alt="">
                 </a>
@@ -48,7 +55,14 @@
             </div>
             {% endif %}
         </div>
+        {% if post.like_count == 0 or post.like_count > 10 %}
         <p>좋아요 {{ post.like_count }}개</p>
+        {% else %}
+        <p>
+            {% for author in post.like_users.all %}{% if forloop.counter != 1 %}, {% endif %}<a href="#" class="like-user">
+            {{ author.username }}</a>{% endfor %}님이 좋아합니다.
+        </p>
+        {% endif %}
         <div class="post-comment-container">
             {% if post.my_comment %}
             {% include 'include/post_comment.html' with comment=post.my_comment style='red'%}

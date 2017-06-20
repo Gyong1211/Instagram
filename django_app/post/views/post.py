@@ -4,10 +4,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 
 from post.decorators import post_owner
 from post.forms import PostForm, CommentForm
-from ..models import Post, Tag
+from ..models import Post, Tag, PostLike
 
 User = get_user_model()
 
@@ -18,7 +19,9 @@ __all__ = (
     'post_modify',
     'post_delete',
     'hashtag_post_list',
+    'post_like',
 )
+
 
 def post_list(request):
     # 모든 Post목록을 'posts'라는 key로 context에 담아 return render처리
@@ -155,8 +158,25 @@ def hashtag_post_list(request, tag_name):
     posts_count = posts.count()
 
     context = {
-        'tag':tag,
-        'posts':posts,
-        'posts_count':posts_count,
+        'tag': tag,
+        'posts': posts,
+        'posts_count': posts_count,
     }
     return render(request, 'post/hashtag_post_list.html', context=context)
+
+@require_POST
+@login_required
+def post_like(request, post_pk):
+    next = request.GET.get('next')
+    post = get_object_or_404(Post, pk=post_pk)
+    if request.user not in post.like_users.all():
+        PostLike.objects.create(user=request.user, post=post)
+        if next:
+            return redirect(next)
+        return redirect('post:post_list')
+    else:
+        postlike = PostLike.objects.get(user=request.user, post=post)
+        postlike.delete()
+        if next:
+            return redirect(next)
+        return redirect('post:post_list')

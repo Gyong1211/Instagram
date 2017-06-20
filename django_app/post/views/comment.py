@@ -61,6 +61,9 @@ def comment_modify(request, post_pk, comment_pk):
 
 
 def comment_delete(request, post_pk, comment_pk):
+    next = request.GET.get('next')
     comment = Comment.objects.get(pk=comment_pk)
     comment.delete()
+    if next:
+        return redirect(next)
     return redirect('post:post_detail', post_pk)
