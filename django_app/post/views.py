@@ -152,7 +152,7 @@ def comment_create(request, post_pk):
             author=request.user,
             post=post,
         )
-        return redirect('post:post_detail', pqost_pk)
+        return redirect('post:post_detail', post_pk)
         # else:
         #     return redirect('post:post_detail', post_pk)
 
