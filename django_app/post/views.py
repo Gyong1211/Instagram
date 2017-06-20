@@ -4,6 +4,8 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.urls import reverse
+from django.views.decorators.http import require_POST
+
 from member.forms import LoginForm
 from post.decorators import post_owner, comment_owner
 from post.forms import PostForm, CommentForm
@@ -134,6 +136,8 @@ def post_delete(request, post_pk):
     return redirect('post:post_list')
 
 
+@require_POST
+@login_required
 def comment_create(request, post_pk):
     # post = Post.objects.get(pk=post_pk)
     # form = CommentForm(data=request.POST)
@@ -141,14 +145,14 @@ def comment_create(request, post_pk):
     # if form.is_valid():
     #     Comment.objects.create(post=post, author=user, content=form.cleaned_data['content'])
     # return redirect('post:post_detail', post_pk)
-    post = Post.objects.get(pk=post_pk)
+    post = get_object_or_404(Post, pk=post_pk)
     form = CommentForm(data=request.POST)
     if form.is_valid():
         form.save(
             author=request.user,
             post=post,
         )
-        return redirect('post:post_detail', post_pk)
+        return redirect('post:post_detail', pqost_pk)
         # else:
         #     return redirect('post:post_detail', post_pk)
 
@@ -174,3 +178,7 @@ def comment_delete(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     comment.delete()
     return redirect('post:post_detail', post_pk)
+
+
+def post_anyway(request):
+    return redirect('post:post_list')

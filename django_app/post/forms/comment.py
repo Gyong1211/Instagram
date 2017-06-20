@@ -13,15 +13,11 @@ class CommentForm(forms.ModelForm):
         if self.instance.content:
             self.fields['content'].initial = self.instance.content
 
-    content = forms.CharField(
-        max_length=100,
-    )
-
     class Meta:
         model = Comment
-        fields = (
+        fields = [
             'content',
-        )
+        ]
 
     def save(self, **kwargs):
         commit = kwargs.get('commit', True)
