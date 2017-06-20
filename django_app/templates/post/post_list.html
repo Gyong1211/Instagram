@@ -2,7 +2,7 @@
 
 {% block content %}
     <div>
-        <a href="{% url 'post:post_create' %}">Post create</a>
+        <a href="{% url 'post:post_create' %}" class="btn">Post create</a>
     </div>
 {% for post in posts %}
     {% include 'include/post.html' with type='list'%}

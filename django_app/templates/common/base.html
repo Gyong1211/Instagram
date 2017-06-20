@@ -54,7 +54,7 @@
                     <form action="{% url 'member:login' %}" method="POST" class="form-inline-login">
                         {% csrf_token %}
                         {{login_form}}
-                        <button type="submit">Login</button>
+                        <button type="submit" class="btn">Login</button>
                     </form>
                     <a href="{% url 'member:signup' %}" class="btn">
                         회원가입
