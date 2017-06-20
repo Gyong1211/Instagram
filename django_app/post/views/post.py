@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
@@ -28,7 +29,19 @@ def post_list(request):
     # post/post_list.html을 template으로 사용하도록 한다
 
     # 각 포스트에 대해 최대 4개까지의 댓글을 보여주도록 템플릿에 설정
-    posts = Post.objects.all()
+    posts_list = Post.objects.all()
+    paginator = Paginator(posts_list, 10)
+
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        posts = paginator.page(paginator.num_pages)
+
     comment_form = CommentForm()
     context = {
         'posts': posts,
@@ -163,6 +176,7 @@ def hashtag_post_list(request, tag_name):
         'posts_count': posts_count,
     }
     return render(request, 'post/hashtag_post_list.html', context=context)
+
 
 @require_POST
 @login_required

@@ -35,3 +35,5 @@ form.form-inline-login input { padding: 5px 8px; font-size: 11px; margin-right: 
 @media screen and (max-width: 700px) { .container { padding-top: 0; } }
 
 .container > .content { padding: 10px; }
+
+.pagination { text-align: center; padding-bottom: 40px; }
