@@ -183,14 +183,25 @@ def hashtag_post_list(request, tag_name):
 def post_like(request, post_pk):
     next = request.GET.get('next')
     post = get_object_or_404(Post, pk=post_pk)
-    if request.user not in post.like_users.all():
-        PostLike.objects.create(user=request.user, post=post)
-        if next:
-            return redirect(next)
-        return redirect('post:post_list')
-    else:
-        postlike = PostLike.objects.get(user=request.user, post=post)
+
+    if post.postlike_set.filter(user=request.user).exists():
+        postlike = post.postlike_set.filter(user=request.user)
         postlike.delete()
-        if next:
-            return redirect(next)
-        return redirect('post:post_list')
+
+    else:
+        PostLike.objects.create(user=request.user, post=post)
+    if next:
+        return redirect(next)
+    return redirect('post:post_list')
+
+    # if request.user not in post.like_users.all():
+    #     PostLike.objects.create(user=request.user, post=post)
+    #     if next:
+    #         return redirect(next)
+    #     return redirect('post:post_list')
+    # else:
+    #     postlike = PostLike.objects.get(user=request.user, post=post)
+    #     postlike.delete()
+    #     if next:
+    #         return redirect(next)
+    #     return redirect('post:post_list')
