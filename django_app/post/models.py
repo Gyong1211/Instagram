@@ -71,6 +71,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
     )
     content = models.CharField(max_length=120)
+    tags = models.ManyToManyField('Tag')
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     like_users = models.ManyToManyField(
