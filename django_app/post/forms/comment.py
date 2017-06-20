@@ -18,6 +18,14 @@ class CommentForm(forms.ModelForm):
         fields = [
             'content',
         ]
+        widgets = {
+            'content': forms.TextInput(
+                attrs={
+                    'class': 'input-comment',
+                    'placeholder': '댓글 입력',
+                }
+            )
+        }
 
     def save(self, **kwargs):
         commit = kwargs.get('commit', True)

@@ -63,8 +63,7 @@
         <p class="created">{{post.created_date}}</p>
         <form action="{% url 'post:comment_create' post_pk=post.pk %}" method="POST">
             {% csrf_token %}
-            {% include 'include/field_set.html' with form=comment_form %}
-            <button type="submit">등록</button>
+            {{ comment_form.content }}
         </form>
     </div>
 </article>
