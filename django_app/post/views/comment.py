@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -30,9 +31,13 @@ def comment_create(request, post_pk):
             author=request.user,
             post=post,
         )
-        if next:
-            return redirect(next)
-        return redirect('post:post_detail', post_pk)
+    else:
+        e = '<br>'.join(['<br>'.join(v) for v in form.errors.values()])
+        messages.error(request, e)
+
+    if next:
+        return redirect(next)
+    return redirect('post:post_detail', post_pk)
 
 
 @comment_owner
@@ -56,5 +61,3 @@ def comment_delete(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     comment.delete()
     return redirect('post:post_detail', post_pk)
-
-

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 from ..models import Comment, Post
 
@@ -26,6 +27,13 @@ class CommentForm(forms.ModelForm):
                 }
             )
         }
+
+    def clean_content(self):
+        content = self.cleaned_data['content']
+        if len(content)<3:
+            raise ValidationError(
+                '댓글은 최소 3자 이상이어야 합니다.'
+            )
 
     def save(self, **kwargs):
         commit = kwargs.get('commit', True)
