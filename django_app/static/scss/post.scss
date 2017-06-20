@@ -40,6 +40,10 @@ article.post {
       margin-bottom: 6px;
     }
     .post-comment {
+      > *{
+        vertical-align: middle;
+      }
+      
       .comment-author {
         font-weight: bold;
         margin-right: 3px;

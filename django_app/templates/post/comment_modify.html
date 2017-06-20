@@ -1,8 +1,11 @@
 {% extends 'common/base.html' %}
 
 {% block content %}
-<form action="" method="POST">
-    {% include 'include/field_set.html' %}
-    <button type="submit"> Modify!</button>
-</form>
+<div class="wrap">
+    <h3>Comment Modify</h3>
+    <form action="" method="POST">
+        {% include 'include/field_set.html' %}
+        <button type="submit" class="btn"> Modify!</button>
+    </form>
+</div>
 {% endblock %}
