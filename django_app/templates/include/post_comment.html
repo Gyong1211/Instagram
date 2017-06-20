@@ -1,6 +1,6 @@
 <div class="post-comment" {% if style == 'red' %} style="color:red" {% endif %}>
 <a href="" class="comment-author">{{comment.author}}</a>
-<span class="comment-content">{{comment.content}}</span>
+<p class="comment-content">{{comment.html_content|safe}}</p>
 {% if user == comment.author %}
 <a href="{% url 'post:comment_modify' post_pk=post.pk comment_pk=comment.pk %}?next={{ request.path }}#post-{{ comment.post.pk }}" class="btn btn-xs">수정</a>
 <form action="{% url 'post:comment_delete' post_pk=post.pk comment_pk=comment.pk %}" method="POST" class="form-inline">

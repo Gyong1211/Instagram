@@ -27,6 +27,9 @@ def comment_create(request, post_pk):
     form = CommentForm(data=request.POST)
     next = request.GET.get('next')
     if form.is_valid():
+        comment = form.save(commit=False)
+        comment.author = request.user
+        comment.post = post
         form.save()
     else:
         e = '<br>'.join(['<br>'.join(v) for v in form.errors.values()])

@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.db import models
 
@@ -71,6 +73,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
     )
     content = models.CharField(max_length=120)
+    html_content = models.TextField(blank=True)
     tags = models.ManyToManyField('Tag')
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
@@ -86,6 +89,26 @@ class Comment(models.Model):
             self.author.username,
             self.content
         )
+
+    def save(self, *args, **kwargs):
+        self.make_html_content_and_add_tags()
+        super().save(*args, **kwargs)
+
+    def make_html_content_and_add_tags(self):
+        p = re.compile(r'(#\w+)')
+        tag_name_list = re.findall(p, self.content)
+        ori_content = self.content
+        for tag_name in tag_name_list:
+            tag, _ = Tag.objects.get_or_create(name=tag_name.replace('#', ''))
+            ori_content = ori_content.replace(
+                tag_name,
+                '<a href="#" class="hash-tag">{}</a>'.format(
+                    tag_name
+                )
+            )
+            if not self.tags.filter(pk=tag.pk).exists():
+                self.tags.add(tag)
+        self.html_content = ori_content
 
 
 class CommentLike(models.Model):
