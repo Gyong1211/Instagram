@@ -1,18 +1,23 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.urls import reverse
-from django.views.decorators.http import require_POST
 
-from member.forms import LoginForm
-from post.decorators import post_owner, comment_owner
+from post.decorators import post_owner
 from post.forms import PostForm, CommentForm
-from .models import Post, Comment
+from ..models import Post
 
 User = get_user_model()
 
+__all__ = (
+    'post_list',
+    'post_detail',
+    'post_create',
+    'post_modify',
+    'post_delete',
+)
 
 def post_list(request):
     # 모든 Post목록을 'posts'라는 key로 context에 담아 return render처리
@@ -133,52 +138,4 @@ def post_modify(request, post_pk):
 def post_delete(request, post_pk):
     post = get_object_or_404(Post, id=post_pk)
     post.delete()
-    return redirect('post:post_list')
-
-
-@require_POST
-@login_required
-def comment_create(request, post_pk):
-    # post = Post.objects.get(pk=post_pk)
-    # form = CommentForm(data=request.POST)
-    # user = request.user
-    # if form.is_valid():
-    #     Comment.objects.create(post=post, author=user, content=form.cleaned_data['content'])
-    # return redirect('post:post_detail', post_pk)
-    post = get_object_or_404(Post, pk=post_pk)
-    form = CommentForm(data=request.POST)
-    if form.is_valid():
-        form.save(
-            author=request.user,
-            post=post,
-        )
-        return redirect('post:post_detail', post_pk)
-        # else:
-        #     return redirect('post:post_detail', post_pk)
-
-
-@comment_owner
-@login_required
-def comment_modify(request, post_pk, comment_pk):
-    comment = Comment.objects.get(pk=comment_pk)
-    if request.method == 'POST':
-        form = CommentForm(data=request.POST, instance=comment)
-        if form.is_valid():
-            form.save(comment_pk=comment_pk)
-            return redirect('post:post_detail', post_pk)
-    else:
-        form = CommentForm(instance=comment)
-    context = {
-        'form': form,
-    }
-    return render(request, 'post/comment_modify.html', context=context)
-
-
-def comment_delete(request, post_pk, comment_pk):
-    comment = Comment.objects.get(pk=comment_pk)
-    comment.delete()
-    return redirect('post:post_detail', post_pk)
-
-
-def post_anyway(request):
     return redirect('post:post_list')
