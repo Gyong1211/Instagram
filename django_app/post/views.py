@@ -158,7 +158,7 @@ def comment_create(request, post_pk):
 def comment_modify(request, post_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     if request.method == 'POST':
-        form = CommentForm(data=request.POST, files=request.FILES, instance=comment)
+        form = CommentForm(data=request.POST, instance=comment)
         if form.is_valid():
             form.save(comment_pk=comment_pk)
             return redirect('post:post_detail', post_pk)
