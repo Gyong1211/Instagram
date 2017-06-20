@@ -25,7 +25,6 @@ class Post(models.Model):
     )
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField('Tag', blank=True)
     my_comment = models.OneToOneField(
         'Comment',
         blank=True,
@@ -42,17 +41,12 @@ class Post(models.Model):
             content=content,
         )
 
-    def add_tag(self, tag_name):
-        tag, tag_created = Tag.objects.get_or_create(name=tag_name)
-        if tag not in self.tags.filter(name=tag_name):
-            self.tags.add(tag)
-
     @property
     def like_count(self):
         return self.like_users.count()
 
     class Meta:
-        ordering = ['-pk',]
+        ordering = ['-pk', ]
 
 
 class PostLike(models.Model):
