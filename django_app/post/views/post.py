@@ -139,3 +139,7 @@ def post_delete(request, post_pk):
     post = get_object_or_404(Post, id=post_pk)
     post.delete()
     return redirect('post:post_list')
+
+
+def post_anyway(request):
+    return redirect('post:post_list')

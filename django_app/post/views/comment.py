@@ -24,14 +24,15 @@ def comment_create(request, post_pk):
     # return redirect('post:post_detail', post_pk)
     post = get_object_or_404(Post, pk=post_pk)
     form = CommentForm(data=request.POST)
+    next = request.GET.get('next')
     if form.is_valid():
         form.save(
             author=request.user,
             post=post,
         )
+        if next:
+            return redirect(next)
         return redirect('post:post_detail', post_pk)
-        # else:
-        #     return redirect('post:post_detail', post_pk)
 
 
 @comment_owner
@@ -57,5 +58,3 @@ def comment_delete(request, post_pk, comment_pk):
     return redirect('post:post_detail', post_pk)
 
 
-def post_anyway(request):
-    return redirect('post:post_list')
