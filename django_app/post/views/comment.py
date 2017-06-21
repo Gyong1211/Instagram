@@ -60,6 +60,8 @@ def comment_modify(request, post_pk, comment_pk):
     return render(request, 'post/comment_modify.html', context=context)
 
 
+@comment_owner
+@login_required
 def comment_delete(request, post_pk, comment_pk):
     next = request.GET.get('next')
     comment = Comment.objects.get(pk=comment_pk)
