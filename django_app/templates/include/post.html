@@ -1,4 +1,6 @@
 {% load static %}
+{% load custom_tags %}
+
 <article id="post-{{ post.pk }}" class="post">
     <header>
         <div class="post-header-left">
@@ -31,7 +33,7 @@
     <div class="post-bottom">
         <div class="post-btn-container clearfix">
             <div class="btn-left">
-                <form action="{% url 'post:post_like' post_pk=post.pk %}?next={{request.path}}#post-{{post.pk}}" method="POST" class="form-inline">
+                <form action="{% url 'post:post_like' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST" class="form-inline">
                         {% csrf_token %}
                         <button type="submit" class="like-btn">
                         {% if request.user not in post.like_users.all %}
@@ -75,7 +77,7 @@
 
         </div>
         <p class="created">{{post.created_date}}</p>
-        <form action="{% url 'post:comment_create' post_pk=post.pk %}?next={{ request.path }}#post-{{ post.pk }}" method="POST">
+        <form action="{% url 'post:comment_create' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST">
             {% csrf_token %}
             {{ comment_form.content }}
         </form>

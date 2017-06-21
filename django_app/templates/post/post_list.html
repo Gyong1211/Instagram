@@ -1,4 +1,5 @@
 {% extends 'common/base.html' %}
+{% load custom_tags %}
 
 {% block content %}
     <div>
@@ -8,8 +9,7 @@
     {% include 'include/post.html' with type='list'%}
 {% endfor %}
 
-<div class="test">{{request.GET}}</div>
-<div class="test">{% for key, values in request.GET.lists %}{% for value in values %}&{{key}}={{value}}{% endfor %}{% endfor %}</div>
+<div class="test">{{request.GET|query_string}}</div>
 
 <div>
     {% if posts.has_previous %}

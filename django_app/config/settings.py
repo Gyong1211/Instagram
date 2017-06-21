@@ -81,7 +81,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'post',
     'member',
-    'django_extensions'
+    'django_extensions',
+    'utils',
 ]
 
 MIDDLEWARE = [
