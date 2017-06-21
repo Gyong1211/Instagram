@@ -27,21 +27,11 @@ def login(request):
             if next:
                 return redirect(next)
             return redirect('post:post_list')
-        else:
-            loginform = LoginForm()
-            context = {
-                'login_form':loginform,
-            }
-            return render(request,'member/login.html', context=context)
 
     else:
         if request.user.is_authenticated:
             return redirect('post:post_list')
-        loginform = LoginForm()
-        context = {
-            'login_form':loginform,
-        }
-        return render(request, 'member/login.html', context=context)
+    return render(request, 'member/login.html')
 
 
 def logout(request):
@@ -57,10 +47,6 @@ def signup(request):
             django_login(request, user)
             return redirect('post:post_list')
 
-
     else:
-        signupform = SignupForm()
-    context = {
-        'signup_form': signupform,
-    }
-    return render(request, 'member/signup.html', context=context)
+        pass
+    return render(request, 'member/signup.html')
