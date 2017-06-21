@@ -92,8 +92,9 @@ class Comment(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            super().save(*args, **kwargs)
+        # if not self.pk:
+        #     super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
         self.make_html_content_and_add_tags()
 
     def make_html_content_and_add_tags(self, update=True):
@@ -109,8 +110,8 @@ class Comment(models.Model):
             if not self.tags.filter(pk=tag.pk).exists():
                 self.tags.add(tag)
         self.html_content = ori_content
+        # super().save(update_fields=['html_content', 'content'])
         super().save(update_fields=['html_content'])
-
 
 class CommentLike(models.Model):
     comment = models.ForeignKey(Comment)

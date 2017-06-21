@@ -47,11 +47,11 @@ def comment_modify(request, post_pk, comment_pk):
     next = request.GET.get('next')
     if request.method == 'POST':
         form = CommentForm(data=request.POST, instance=comment)
-        if form.is_valid():
-            form.save()
-            if next:
-                return redirect(next)
-            return redirect('post:post_detail', post_pk)
+        # if form.is_valid(): #왜 form.is_valid를 안하는거죠? 외않한데?
+        form.save()
+        if next:
+            return redirect(next)
+        return redirect('post:post_detail', post_pk)
     else:
         form = CommentForm(instance=comment)
     context = {
