@@ -123,7 +123,7 @@ def post_create(request):
 @login_required
 def post_modify(request, post_pk):
     post = Post.objects.get(pk=post_pk)
-
+    next = request.GET.get('next')
     # if request.method == 'GET':
     #     forms = ModifyPost(initial={'image': post.image})
     #     context = {
@@ -142,6 +142,8 @@ def post_modify(request, post_pk):
         form = PostForm(data=request.POST, files=request.FILES, instance=post)
         if form.is_valid():
             form.save()
+            if next:
+                return redirect(next)
             return redirect('post:post_detail', post_pk)
     else:
         form = PostForm(instance=post)
