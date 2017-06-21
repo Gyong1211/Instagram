@@ -30,19 +30,19 @@ def post_list(request):
 
     # 각 포스트에 대해 최대 4개까지의 댓글을 보여주도록 템플릿에 설정
     posts_list = Post.objects.all()
-    paginator = Paginator(posts_list, 10)
+    p = Paginator(posts_list, 5)
 
     page = request.GET.get('page')
     try:
-        posts = paginator.page(page)
+        posts = p.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        posts = paginator.page(1)
+        posts = p.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        posts = paginator.page(paginator.num_pages)
+        posts = p.page(p.num_pages)
 
-    comment_form = CommentForm()
+    comment_form = CommentForm(auto_id=False)
     context = {
         'posts': posts,
         'comment_form': comment_form,

@@ -8,20 +8,21 @@
     {% include 'include/post.html' with type='list'%}
 {% endfor %}
 
-<div class="pagination">
-    <span class="step-links">
-        {% if posts.has_previous %}
-            <a href="?page={{ posts.previous_page_number }}">previous</a>
-        {% endif %}
+<div class="test">{{request.GET}}</div>
+<div class="test">{% for key, values in request.GET.lists %}{% for value in values %}&{{key}}={{value}}{% endfor %}{% endfor %}</div>
 
-        <span class="current">
-            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
-        </span>
+<div>
+    {% if posts.has_previous %}
+    <a href="{{request.path}}?page=1" class="btn">첫 페이지로</a>
+    <a href="{{request.path}}?page={{posts.previous_page_number}}" class="btn"><<</a>
+    <span>이전 페이지 : {{posts.previous_page_number}}</span>
+    {% endif %}
+    <span>현재 페이지 : {{posts.number}}</span>
+    {% if posts.has_next %}
+    <span>다음 페이지 : {{posts.next_page_number}}</span>
+    <a href="{{request.path}}?page={{posts.next_page_number}}" class="btn">>></a>
+    <a href="{{request.path}}?page={{posts.paginator.num_pages}}" class="btn">마지막 페이지로</a>
+    {% endif %}
 
-        {% if posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}">next</a>
-        {% endif %}
-    </span>
 </div>
-
 {% endblock %}
