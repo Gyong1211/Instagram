@@ -35,8 +35,8 @@ class User(AbstractUser):
         symmetrical=False,
     )
 
-    # def __str__(self):
-    #     return self.nickname
+    def __str__(self):
+        return self.nickname
 
     def follow_toggle(self, user):
         if not isinstance(user, User):
@@ -58,6 +58,16 @@ class User(AbstractUser):
             raise ValueError
 
         return self.follower_relations.filter(from_user=user).exists()
+
+    @property
+    def following(self):
+        relations = self.follow_relations.all()
+        return User.objects.filter(pk__in=relations.values('pk'))
+
+    @property
+    def followers(self):
+        relations = self.follower_relations.all()
+        return User.objects.filter(pk__in=relations.values('pk'))
 
 
 class Relation(models.Model):
