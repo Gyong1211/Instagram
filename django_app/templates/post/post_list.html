@@ -9,20 +9,18 @@
     {% include 'include/post.html' with type='list'%}
 {% endfor %}
 
-<div class="test">{{request.GET|query_string}}</div>
+<!--현재 request.path 쿼리 출력 구문-->
+<!--<div class="test">{{request.GET|query_string}}</div>-->
 
-<div>
+<div class="pagination">
     {% if posts.has_previous %}
     <a href="{{request.path}}?page=1" class="btn">첫 페이지로</a>
-    <a href="{{request.path}}?page={{posts.previous_page_number}}" class="btn"><<</a>
-    <span>이전 페이지 : {{posts.previous_page_number}}</span>
+    <a href="{{request.path}}?page={{posts.previous_page_number}}" class="btn"><<{{posts.previous_page_number}}</a>
     {% endif %}
-    <span>현재 페이지 : {{posts.number}}</span>
+    <span class="btn">{{posts.number}}</span>
     {% if posts.has_next %}
-    <span>다음 페이지 : {{posts.next_page_number}}</span>
-    <a href="{{request.path}}?page={{posts.next_page_number}}" class="btn">>></a>
+    <a href="{{request.path}}?page={{posts.next_page_number}}" class="btn">{{posts.next_page_number}}>></a>
     <a href="{{request.path}}?page={{posts.paginator.num_pages}}" class="btn">마지막 페이지로</a>
     {% endif %}
-
 </div>
 {% endblock %}
