@@ -47,6 +47,18 @@ class User(AbstractUser):
         if not relation_created:
             relation.delete()
 
+    def is_follow(self, user):
+        if not isinstance(user, User):
+            raise ValueError
+
+        return self.follow_relations.filter(to_user=user).exists()
+
+    def is_follower(self, user):
+        if not isinstance(user, User):
+            raise ValueError
+
+        return self.follower_relations.filter(from_user=user).exists()
+
 
 class Relation(models.Model):
     from_user = models.ForeignKey(
