@@ -20,7 +20,7 @@ __all__ = (
     'post_modify',
     'post_delete',
     'hashtag_post_list',
-    'post_like',
+    'post_like_toggle',
 )
 
 
@@ -182,7 +182,7 @@ def hashtag_post_list(request, tag_name):
 
 @require_POST
 @login_required
-def post_like(request, post_pk):
+def post_like_toggle(request, post_pk):
     next = request.GET.get('next')
     post = get_object_or_404(Post, pk=post_pk)
 

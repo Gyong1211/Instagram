@@ -33,7 +33,7 @@
     <div class="post-bottom">
         <div class="post-btn-container clearfix">
             <div class="btn-left">
-                <form action="{% url 'post:post_like' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST" class="form-inline">
+                <form action="{% url 'post:post_like_toggle' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST" class="form-inline">
                         {% csrf_token %}
                         <button type="submit" class="like-btn">
                         {% if request.user not in post.like_users.all %}

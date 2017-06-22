@@ -13,5 +13,5 @@ urlpatterns = [
     url(r'^(?P<post_pk>\d+)/comment_modify/(?P<comment_pk>\d+)/$', views.comment_modify, name='comment_modify'),
     url(r'^(?P<post_pk>\d+)/comment_delete/(?P<comment_pk>\d+)/$', views.comment_delete, name='comment_delete'),
     url(r'^tag/(?P<tag_name>\w+)/$', views.hashtag_post_list, name='hashtag_post_list'),
-    url(r'^(?P<post_pk>\d+)/like/$', views.post_like, name='post_like'),
+    url(r'^(?P<post_pk>\d+)/like/$', views.post_like_toggle, name='post_like'),
 ]
