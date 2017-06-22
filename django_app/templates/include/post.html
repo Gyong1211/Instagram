@@ -33,23 +33,25 @@
     <div class="post-bottom">
         <div class="post-btn-container clearfix">
             <div class="btn-left">
-                <form action="{% url 'post:post_like' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST" class="form-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="like-btn">
+                <form action="{% url 'post:post_like' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}"
+                      method="POST" class="form-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="like-btn">
                         {% if request.user not in post.like_users.all %}
                         <img src="{% static 'images/post_unlike.png' %}" alt="">
                         {% else %}
                         <img src="{% static 'images/post_like.png' %}" alt="">
                         {% endif %}
-                        </button>
+                    </button>
                 </form>
-                    <label for="comment-{{post.pk}}">
-                        <img src="{% static 'images/post_comment.png' %}" alt="">
-                    </label>
+                <label for="comment-{{post.pk}}">
+                    <img src="{% static 'images/post_comment.png' %}" alt="">
+                </label>
             </div>
             {% if user == post.author %}
             <div class="btn-right">
-                <a href="{% url 'post:post_modify' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" class="btn">수정하기</a>
+                <a href="{% url 'post:post_modify' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}"
+                   class="btn">수정하기</a>
                 <form action="{% url 'post:post_delete' post_pk=post.pk %}" method="POST" class="form-inline">
                     {% csrf_token %}
                     <button type="submit" class="btn">삭제하기</button>
@@ -63,7 +65,8 @@
         <p>좋아요 {{ post.like_count }}개</p>
         {% else %}
         <p>
-            {% for author in post.like_users.all %}{% if forloop.counter != 1 %}, {% endif %}<a href="#" class="like-user">
+            {% for author in post.like_users.all %}{% if forloop.counter != 1 %}, {% endif %}<a href="#"
+                                                                                                class="like-user">
             {{ author.username }}</a>{% endfor %}님이 좋아합니다.
         </p>
         {% endif %}
@@ -79,9 +82,11 @@
 
         </div>
         <p class="created">{{post.created_date}}</p>
-        <form action="{% url 'post:comment_create' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST">
+        <form action="{% url 'post:comment_create' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}"
+              method="POST">
             {% csrf_token %}
-            <input type="text" name="content" required maxlength="120" class="input-comment" placeholder="댓글 입력" id="comment-{{post.pk}}">
+            <input type="text" name="content" required maxlength="120" class="input-comment" placeholder="댓글 입력"
+                   id="comment-{{post.pk}}">
         </form>
     </div>
 </article>

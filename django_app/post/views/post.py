@@ -191,7 +191,7 @@ def post_like_toggle(request, post_pk):
         PostLike.objects.create(user=request.user, post=post)
     if next:
         return redirect(next)
-    return redirect('post:post_list')
+    return redirect('post:post_detail', post_pk=post.pk)
 
     # if request.user not in post.like_users.all():
     #     PostLike.objects.create(user=request.user, post=post)
