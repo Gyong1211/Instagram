@@ -64,8 +64,29 @@ def profile(request, user_pk=None):
         user = get_object_or_404(User, pk=user_pk)
     else:
         user = request.user
+
+    page = request.GET.get('page')
+    post_per_page = 2
+    post_num = user.post_set.count()
+    page_num = post_num // post_per_page + 1
+    post_list = user.post_set.all().order_by('-created_date')
+
+    try:
+        page = int(page)
+
+        if page < 1:
+            posts = post_list[:post_per_page]
+        elif page >= page_num + 1:
+            posts = post_list
+        else:
+            posts = post_list[:(page * post_per_page)]
+
+    except ValueError and TypeError:
+        posts = post_list[:post_per_page]
+
     context = {
         'cur_user': user,
+        'posts': posts
     }
     return render(request, 'member/profile.html', context=context)
 

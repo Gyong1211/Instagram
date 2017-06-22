@@ -26,5 +26,9 @@
             <a href="{% url 'member:profile' user_pk=u.pk %}" class="btn">{{ u }}</a>
         </div>
     {% endfor %}
+
+    {% for post in posts %}
+    {% include 'include/post.html' with type='list'%}
+    {% endfor %}
 </div>
 {% endblock %}
