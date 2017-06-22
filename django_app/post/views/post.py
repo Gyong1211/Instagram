@@ -29,7 +29,10 @@ def post_list(request):
     # post/post_list.html을 template으로 사용하도록 한다
 
     # 각 포스트에 대해 최대 4개까지의 댓글을 보여주도록 템플릿에 설정
-    posts_list = Post.objects.all()
+    if request.user.is_authenticated:
+        posts_list = Post.objects.exclude(author__in=request.user.block)
+    else:
+        posts_list = Post.objects.all()
     p = Paginator(posts_list, 5)
 
     page = request.GET.get('page')
@@ -41,7 +44,6 @@ def post_list(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         posts = p.page(p.num_pages)
-
 
     context = {
         'posts': posts,
