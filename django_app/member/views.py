@@ -1,11 +1,15 @@
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout, get_user_model
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
+from .decorators import anonymous_required
 from .forms import LoginForm, SignupForm
 
 User = get_user_model()
 
 
+@anonymous_required
 def login(request):
     if request.method == 'POST':
         # username = request.POST['username']
@@ -34,11 +38,13 @@ def login(request):
     return render(request, 'member/login.html')
 
 
+@login_required
 def logout(request):
     django_logout(request)
     return redirect('post:post_list')
 
 
+@anonymous_required
 def signup(request):
     if request.method == 'POST':
         signupform = SignupForm(request.POST)
