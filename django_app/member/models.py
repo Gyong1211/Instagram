@@ -46,6 +46,8 @@ class User(AbstractUser):
 
         if not relation_created:
             relation.delete()
+        else:
+            return relation
 
     def is_follow(self, user):
         if not isinstance(user, User):
