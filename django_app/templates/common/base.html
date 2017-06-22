@@ -47,7 +47,8 @@
 
             <nav>
                 <div>{% if user.is_authenticated %}
-                    {{user}}가 로그인 중입니다. <a href="{% url 'member:logout' %}" class="btn">
+                    <a href="{% url 'member:my_profile' %}">{{user}}</a>가 로그인 중입니다.
+                    <a href="{% url 'member:logout' %}" class="btn">
                         로그아웃
                     </a>
                     {% else %}

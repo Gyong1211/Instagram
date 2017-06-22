@@ -4,7 +4,7 @@
 <article id="post-{{ post.pk }}" class="post">
     <header>
         <div class="post-header-left">
-            <a href="#">
+            <a href="{% url 'member:profile' user_pk=post.author.pk %}">
                 <img src="" alt="">
                 <span class="header-author">{{post.author}}</span>
             </a>
@@ -65,9 +65,9 @@
         <p>좋아요 {{ post.like_count }}개</p>
         {% else %}
         <p>
-            {% for author in post.like_users.all %}{% if forloop.counter != 1 %}, {% endif %}<a href="#"
-                                                                                                class="like-user">
-            {{ author.username }}</a>{% endfor %}님이 좋아합니다.
+            {% for author in post.like_users.all %}{% if forloop.counter != 1 %}, {% endif %}<a
+                href="{% url 'member:profile' user_pk=author.pk %}" class="like-user">
+            {{ author }}</a>{% endfor %}님이 좋아합니다.
         </p>
         {% endif %}
         <div class="post-comment-container">

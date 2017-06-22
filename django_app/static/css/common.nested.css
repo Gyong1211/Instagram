@@ -9,6 +9,11 @@
   padding: 2px 6px;
   border-radius: 1px; }
 
+.btn-blue {
+  border: 1px solid #3897f0;
+  background-color: #3897f0;
+  color: white; }
+
 .field-wrapper ul.errors {
   font-size: 13px;
   color: red;
