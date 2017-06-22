@@ -37,3 +37,5 @@ form.form-inline-login input { padding: 5px 8px; font-size: 11px; margin-right: 
 .container > .content { padding: 10px; }
 
 .pagination { text-align: center; padding-bottom: 40px; }
+
+.load-next-page { text-align: center; padding-bottom: 40px; }

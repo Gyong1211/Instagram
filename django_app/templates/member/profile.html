@@ -30,5 +30,10 @@
     {% for post in posts %}
     {% include 'include/post.html' with type='list'%}
     {% endfor %}
+    <div class="load-next-page">
+        {% if next_page_num <= max_page_num %}
+        <a href="{{request.path}}?page={{ next_page_num }}" class="btn btn-blue">더 읽어들이기</a>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
