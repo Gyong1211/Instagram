@@ -66,9 +66,12 @@ def profile(request, user_pk=None):
         user = request.user
 
     page = request.GET.get('page')
-    post_per_page = 2
+    post_per_page = 3
     post_num = user.post_set.count()
-    page_num = post_num // post_per_page + 1
+    if post_num % post_per_page:
+        page_num = post_num // post_per_page + 1
+    else:
+        page_num = post_num // post_per_page
     post_list = user.post_set.all().order_by('-created_date')
 
     try:
