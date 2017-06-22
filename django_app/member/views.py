@@ -76,7 +76,7 @@ def profile(request, user_pk=None):
 
     try:
         page = int(page)
-    except ValueError and TypeError:
+    except (TypeError, ValueError):
         page = 1
 
     if page < 1:
