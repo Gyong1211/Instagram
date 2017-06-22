@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from post.decorators import post_owner
-from post.forms import PostForm, CommentForm
+from post.forms import PostForm
 from ..models import Post, Tag, PostLike
 
 User = get_user_model()
@@ -42,10 +42,9 @@ def post_list(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         posts = p.page(p.num_pages)
 
-    comment_form = CommentForm(auto_id=False)
+
     context = {
         'posts': posts,
-        'comment_form': comment_form,
     }
     return render(request, 'post/post_list.html', context=context)
 
@@ -53,7 +52,6 @@ def post_list(request):
 def post_detail(request, post_pk):
     try:
         post = Post.objects.get(id=post_pk)
-        comment_form = CommentForm()
     except Post.DoesNotExist as e:
         # 1. 404 Notfound를 출력한다.
         # return HttpResponseNotFound('Post Not found, detail: {}'.format(e))
@@ -66,7 +64,6 @@ def post_detail(request, post_pk):
 
     context = {
         'post': post,
-        'comment_form': comment_form,
     }
     rendered_string = template.render(context=context, request=request)
     return HttpResponse(rendered_string)

@@ -33,7 +33,7 @@
     <div class="post-bottom">
         <div class="post-btn-container clearfix">
             <div class="btn-left">
-                <form action="{% url 'post:post_like_toggle' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST" class="form-inline">
+                <form action="{% url 'post:post_like' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST" class="form-inline">
                         {% csrf_token %}
                         <button type="submit" class="like-btn">
                         {% if request.user not in post.like_users.all %}
@@ -43,7 +43,7 @@
                         {% endif %}
                         </button>
                 </form>
-                    <label for="">
+                    <label for="comment-{{post.pk}}">
                         <img src="{% static 'images/post_comment.png' %}" alt="">
                     </label>
             </div>
@@ -57,7 +57,9 @@
             </div>
             {% endif %}
         </div>
-        {% if post.like_count == 0 or post.like_count > 10 %}
+        {% if post.like_count == 0 %}
+        <p>가장 먼저 좋아요를 눌러보세요!</p>
+        {% elif post.like_count > 10 %}
         <p>좋아요 {{ post.like_count }}개</p>
         {% else %}
         <p>
@@ -79,7 +81,7 @@
         <p class="created">{{post.created_date}}</p>
         <form action="{% url 'post:comment_create' post_pk=post.pk %}?next={{request.path}}{{ request.GET|query_string }}#post-{{post.pk}}" method="POST">
             {% csrf_token %}
-            {{ comment_form.content }}
+            <input type="text" name="content" required maxlength="120" class="input-comment" placeholder="댓글 입력" id="comment-{{post.pk}}">
         </form>
     </div>
 </article>
