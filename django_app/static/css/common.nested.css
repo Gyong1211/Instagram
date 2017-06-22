@@ -14,6 +14,11 @@
   background-color: #3897f0;
   color: white; }
 
+.btn-red {
+  border: 1px solid #fe163f;
+  background-color: #fe163f;
+  color: white; }
+
 .field-wrapper ul.errors {
   font-size: 13px;
   color: red;

@@ -4,6 +4,8 @@
 
 .btn-blue { border: 1px solid #3897f0; background-color: #3897f0; color: white; }
 
+.btn-red { border: 1px solid #fe163f; background-color: #fe163f; color: white; }
+
 .field-wrapper ul.errors { font-size: 13px; color: red; font-weight: bold; }
 
 .field-wrapper label { font-size: 11px; }

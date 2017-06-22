@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import Q
 
 """
     동작
@@ -41,51 +42,108 @@ class User(AbstractUser):
     def follow_toggle(self, user):
         if not isinstance(user, User):
             raise ValueError
-
-        relation, relation_created = self.follow_relations.get_or_create(to_user=user)
-        if not relation_created:
-            relation.delete()
+        # user를 팔로우하는 경우
+        # to self from user 관계가 있는가?
+        if self.from_self_relations.filter(to_user=user).exists():
+            relation = self.from_self_relations.get(to_user=user)
+            # 있으면 그게 블락인가?
+            if relation.block:
+                # 블락이라면 팔로우로 관계 변경 및 저장
+                relation.block = False
+                relation.save()
+            #팔로우라면 관계 삭제
+            else:
+                relation.delete()
+        #관계가 없는 경우
         else:
-            return relation
+            #팔로우 관계 생성
+            return self.from_self_relations.create(to_user=user, block=False)
 
     def is_follow(self, user):
         if not isinstance(user, User):
             raise ValueError
 
-        return self.follow_relations.filter(to_user=user).exists()
+        return self.from_self_relations.filter(Q(to_user=user) & Q(block=False)).exists()
 
     def is_follower(self, user):
         if not isinstance(user, User):
             raise ValueError
 
-        return self.follower_relations.filter(from_user=user).exists()
+        return self.to_self_relations.filter(Q(from_user=user) & Q(block=False)).exists()
+
+
+    def block_toggle(self, user):
+        if not isinstance(user, User):
+            raise ValueError
+        # user를 블락하는 경우
+        # to self from user 관계가 있는가?
+        if self.from_self_relations.filter(to_user=user).exists():
+
+            relation = self.from_self_relations.get(to_user=user)
+            # 있으면 그게 블락인가?
+            if relation.block:
+                # 블락이라면 블락 관계 삭제
+                relation.delete()
+            #팔로우라면 블락으로 관계 변경 후 세이브
+            else:
+                relation.block = True
+                relation.save()
+        #관계가 없는 경우
+        else:
+            #블락 관계 생성
+            return self.from_self_relations.create(to_user=user, block=True)
+
+    def is_block(self, user):
+        if not isinstance(user, User):
+            raise ValueError
+
+        return self.from_self_relations.filter(Q(to_user=user) & Q(block=True)).exists()
+
+    def is_blocked(self, user):
+        if not isinstance(user, User):
+            raise ValueError
+
+        return self.to_self_relations.filter(Q(from_user=user) & Q(block=True)).exists()
+
 
     @property
     def following(self):
-        relations = self.follow_relations.all()
+        relations = self.from_self_relations.filter(block=False)
         return User.objects.filter(pk__in=relations.values('to_user'))
 
     @property
     def followers(self):
-        relations = self.follower_relations.all()
+        relations = self.to_self_relations.filter(block=False)
+        return User.objects.filter(pk__in=relations.values('from_user'))
+
+    @property
+    def block(self):
+        relations = self.from_self_relations.filter(block=True)
+        return User.objects.filter(pk__in=relations.values('to_user'))
+
+    @property
+    def blocked(self):
+        relations = self.to_self_relations.filter(block=True)
         return User.objects.filter(pk__in=relations.values('from_user'))
 
 
 class Relation(models.Model):
     from_user = models.ForeignKey(
         User,
-        related_name='follow_relations',
+        related_name='from_self_relations',
     )
     to_user = models.ForeignKey(
         User,
-        related_name='follower_relations',
+        related_name='to_self_relations',
     )
+    block = models.BooleanField()
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return 'Relation from {} to {}'.format(
+        return 'Relation from {} to {} ({})'.format(
             self.from_user,
             self.to_user,
+            'block' if self.block else 'follow',
         )
 
     class Meta:
