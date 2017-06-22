@@ -78,19 +78,16 @@ def profile(request, user_pk=None):
 
     if page < 1:
         page = 1
-    elif page >= page_num + 1:
+    elif page > page_num:
         page = page_num
     else:
         pass
     posts = post_list[:(page * post_per_page)]
 
-    print(page+1)
-    print(page_num)
-
     context = {
         'cur_user': user,
         'posts': posts,
-        'next_page_num': page+1,
+        'next_page_num': page + 1,
         'max_page_num': page_num,
     }
     return render(request, 'member/profile.html', context=context)
