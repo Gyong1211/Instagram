@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 from .decorators import anonymous_required
 from .forms import LoginForm, SignupForm
@@ -56,3 +57,25 @@ def signup(request):
     else:
         pass
     return render(request, 'member/signup.html')
+
+
+def profile(request, user_pk=None):
+    if user_pk:
+        user = get_object_or_404(User, pk=user_pk)
+    else:
+        user = request.user
+    context = {
+        'cur_user': user,
+    }
+    return render(request, 'member/profile.html', context=context)
+
+
+@require_POST
+@login_required
+def follow_toggle(request, user_pk):
+    to_user = User.objects.get(pk=user_pk)
+    request.user.follow_toggle(to_user)
+    next = request.GET.get('next')
+    if next:
+        return redirect(next)
+    return redirect('my_profile')
