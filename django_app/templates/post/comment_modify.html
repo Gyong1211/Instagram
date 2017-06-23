@@ -4,6 +4,7 @@
 <div class="wrap">
     <h3>Comment Modify</h3>
     <form action="" method="POST">
+        {% csrf_token %}
         {% include 'include/field_set.html' %}
         <button type="submit" class="btn"> Modify!</button>
     </form>

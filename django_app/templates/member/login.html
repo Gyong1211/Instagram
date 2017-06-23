@@ -2,7 +2,8 @@
 
 {% block content %}
 <form action="" method="POST">
-{% include 'include/field_set.html' with form=login_form%}
+    {% csrf_token %}
+    {% include 'include/field_set.html' with form=login_form%}
     <button type="submit">Login</button>
 </form>
 {% endblock %}
