@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Q
 
+from utils.fields import CustomImageField
+
 """
     동작
         follow : 내가 다른사람을 follow함
@@ -30,10 +32,10 @@ class User(AbstractUser):
         null=True,
         unique=True,
     )
-    img_profile = models.ImageField(
+    img_profile = CustomImageField(
         upload_to='member',
-        null=True,
         blank=True,
+        default_static_image='images/profile.png'
     )
     relations = models.ManyToManyField(
         'self',

@@ -89,7 +89,7 @@ def profile(request, user_pk=None):
     else:
         pass
     posts = post_list[:(page * post_per_page)]
-    last_post_pk = posts.last().pk
+    last_post_pk = posts.last().pk if posts.last() else None
 
     context = {
         'cur_user': user,

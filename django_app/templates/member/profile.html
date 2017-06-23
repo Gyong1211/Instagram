@@ -5,11 +5,7 @@
 {% block content %}
 <div class="content">
 
-    {% if cur_user.img_profile %}
     <img src="{{ cur_user.img_profile.url }}" alt="" width="150">
-    {% else %}
-    <img src="{%static 'images/icon_profile.png' %}" alt="" width="150">
-    {% endif %}
 
     <h3>{{cur_user.nickname}}({{cur_user.username}})</h3>
     {% if user.is_authenticated %}
