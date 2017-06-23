@@ -56,12 +56,12 @@ class User(AbstractUser):
                 # 블락이라면 팔로우로 관계 변경 및 저장
                 relation.block = False
                 relation.save()
-            #팔로우라면 관계 삭제
+            # 팔로우라면 관계 삭제
             else:
                 relation.delete()
-        #관계가 없는 경우
+        # 관계가 없는 경우
         else:
-            #팔로우 관계 생성
+            # 팔로우 관계 생성
             return self.from_self_relations.create(to_user=user, block=False)
 
     def is_follow(self, user):
@@ -76,7 +76,6 @@ class User(AbstractUser):
 
         return self.to_self_relations.filter(Q(from_user=user) & Q(block=False)).exists()
 
-
     def block_toggle(self, user):
         if not isinstance(user, User):
             raise ValueError
@@ -89,13 +88,13 @@ class User(AbstractUser):
             if relation.block:
                 # 블락이라면 블락 관계 삭제
                 relation.delete()
-            #팔로우라면 블락으로 관계 변경 후 세이브
+            # 팔로우라면 블락으로 관계 변경 후 세이브
             else:
                 relation.block = True
                 relation.save()
-        #관계가 없는 경우
+        # 관계가 없는 경우
         else:
-            #블락 관계 생성
+            # 블락 관계 생성
             return self.from_self_relations.create(to_user=user, block=True)
 
     def is_block(self, user):
@@ -109,7 +108,6 @@ class User(AbstractUser):
             raise ValueError
 
         return self.to_self_relations.filter(Q(from_user=user) & Q(block=True)).exists()
-
 
     @property
     def following(self):
