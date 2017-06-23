@@ -33,9 +33,9 @@ def login(request):
         #     return redirect('post:post_list')
         # else:
         #     return HttpResponse('Login invalid!')
-        loginform = LoginForm(request.POST)
-        if loginform.is_valid():
-            user = loginform.cleaned_data['user']
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data['user']
             django_login(request, user)
             next = request.GET.get('next')
             if next:
@@ -57,9 +57,9 @@ def logout(request):
 @anonymous_required
 def signup(request):
     if request.method == 'POST':
-        signupform = SignupForm(request.POST)
-        if signupform.is_valid():
-            user = signupform.create_user()
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.create_user()
             django_login(request, user)
             return redirect('post:post_list')
 
