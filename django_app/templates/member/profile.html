@@ -11,7 +11,7 @@
         {% if cur_user in user.following %}
             <button type="submit" class="btn">팔로잉</button>
         {% else %}
-            <button type="submit" class="btn btn-blue">팔로우</button>
+            <button type="submit" class="btn btn-primary">팔로우</button>
         {% endif %}
     </form>
     {% endif %}
@@ -48,12 +48,17 @@
     {% endfor %}
     {% endif %}
 
+    <ul class="profile-photo-list">
     {% for post in posts %}
-    {% include 'include/post.html' with type='list'%}
+    <li>
+        <img src="{{post.image.url}}" alt="">
+    </li>
     {% endfor %}
+    </ul>
+    
     <div class="load-next-page">
         {% if next_page_num <= max_page_num %}
-        <a href="{{request.path}}?page={{ next_page_num }}" class="btn btn-blue">더 읽어들이기</a>
+        <a href="{{request.path}}?page={{ next_page_num }}" class="btn btn-primary btn-lg btn-block">더 읽어들이기</a>
         {% endif %}
     </div>
 </div>
