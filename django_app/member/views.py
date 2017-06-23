@@ -65,7 +65,7 @@ def profile(request, user_pk=None):
     else:
         user = request.user
 
-    page = request.GET.get('page')
+    page = request.GET.get('page', 1)
     post_per_page = 3
     post_num = user.post_set.count()
     if post_num % post_per_page:
@@ -76,8 +76,11 @@ def profile(request, user_pk=None):
 
     try:
         page = int(page)
-    except (TypeError, ValueError):
+    except ValueError:
         page = 1
+    except Exception as e:
+        page = 1
+        print(e)
 
     if page < 1:
         page = 1
