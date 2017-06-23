@@ -3,10 +3,10 @@
 {% block content %}
 <div class="content">
     <h3>Profile edit</h3>
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {% include 'include/field_set.html' %}
-        <button type="submit">Edit!</button>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">프로필 수정 완료</button>
     </form>
 </div>
 {% endblock %}
