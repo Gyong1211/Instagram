@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
 from .decorators import anonymous_required
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, SignupForm, UserEditForm
 
 User = get_user_model()
 
@@ -121,3 +121,19 @@ def block_toggle(request, user_pk):
     if next:
         return redirect(next)
     return redirect('my_profile')
+
+
+@login_required
+def profile_edit(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserEditForm(data=request.POST, files=request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('member:my_profile')
+    else:
+        form = UserEditForm(instance=user)
+    context = {
+        'form': form,
+    }
+    return render(request, 'member/profile_edit.html', context=context)

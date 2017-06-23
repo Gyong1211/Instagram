@@ -30,6 +30,11 @@ class User(AbstractUser):
         null=True,
         unique=True,
     )
+    img_profile = models.ImageField(
+        upload_to='member',
+        null=True,
+        blank=True,
+    )
     relations = models.ManyToManyField(
         'self',
         through='Relation',

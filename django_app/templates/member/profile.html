@@ -14,8 +14,6 @@
             <button type="submit" class="btn btn-primary">팔로우</button>
         {% endif %}
     </form>
-    {% endif %}
-    {% if user != cur_user %}
     <form action="{% url 'member:block_toggle' user_pk=cur_user.pk %}?next={{request.path}}{{request.GET|query_string}}" method="POST">
         {% csrf_token %}
         {% if cur_user in user.block %}
@@ -24,6 +22,8 @@
             <button type="submit" class="btn btn">블락</button>
         {% endif %}
     </form>
+    {% else %}
+    <a href="{% url 'member:profile_edit' %}" class="btn">프로필 수정</a>
     {% endif %}
     {% endif %}
     <h5>Following</h5>
