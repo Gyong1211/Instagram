@@ -102,8 +102,8 @@ def profile(request, user_pk=None):
 @require_POST
 @login_required
 def follow_toggle(request, user_pk):
-    to_user = User.objects.get(pk=user_pk)
-    request.user.follow_toggle(to_user)
+    target_user = get_object_or_404(User, pk=user_pk)
+    request.user.follow_toggle(target_user)
     next = request.GET.get('next')
     if next:
         return redirect(next)
@@ -113,8 +113,8 @@ def follow_toggle(request, user_pk):
 @require_POST
 @login_required
 def block_toggle(request, user_pk):
-    to_user = User.objects.get(pk=user_pk)
-    request.user.block_toggle(to_user)
+    target_user = get_object_or_404(User, pk=user_pk)
+    request.user.block_toggle(target_user)
     next = request.GET.get('next')
     if next:
         return redirect(next)
