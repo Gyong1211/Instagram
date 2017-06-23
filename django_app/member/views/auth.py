@@ -1,6 +1,10 @@
+from pprint import pprint
+
+from django.conf import settings
 from django.contrib.auth import login as django_login, logout as django_logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+import requests
 
 from ..decorators import anonymous_required
 from ..forms import LoginForm, SignupForm
@@ -11,6 +15,7 @@ __all__ = (
     'login',
     'logout',
     'signup',
+    'facebook_login',
 )
 
 
@@ -61,3 +66,28 @@ def signup(request):
     else:
         pass
     return render(request, 'member/signup.html')
+
+
+def facebook_login(request):
+    url_access_token = 'https://graph.facebook.com/v2.9/oauth/access_token?client_id={app_id}' \
+                       '&redirect_uri={redirect_uri}' \
+                       '&client_secret={app_secret}' \
+                       '&code={code_parameter}'
+
+    code = request.GET.get('code')
+    if code:
+        redirect_uri = '{}://{}{}'.format(
+            request.scheme,
+            request.META['HTTP_HOST'],
+            request.path,
+        )
+        print(redirect_uri)
+        url_access_token_params = {
+            'client_id': settings.FACEBOOK_APP_ID,
+            'redirect_uri': redirect_uri,
+            'app_secret': settings.FACEBOOK_SECRET_CODE,
+            'code': code,
+        }
+        response = requests.get(url_access_token, params=url_access_token_params)
+        result = response.json()
+        pprint(result)
