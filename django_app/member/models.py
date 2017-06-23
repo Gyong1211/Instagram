@@ -54,9 +54,9 @@ class User(AbstractUser):
         if self.from_self_relations.filter(to_user=user).exists():
             relation = self.from_self_relations.get(to_user=user)
             # 있으면 그게 블락인가?
-            if relation.block:
+            if relation.relation_type == 'bl':
                 # 블락이라면 팔로우로 관계 변경 및 저장
-                relation.block = False
+                relation.relation_type = 'fl'
                 relation.save()
             # 팔로우라면 관계 삭제
             else:
@@ -64,19 +64,19 @@ class User(AbstractUser):
         # 관계가 없는 경우
         else:
             # 팔로우 관계 생성
-            return self.from_self_relations.create(to_user=user, block=False)
+            return self.from_self_relations.create(to_user=user, relation_type='fl')
 
     def is_follow(self, user):
         if not isinstance(user, User):
             raise ValueError
 
-        return self.from_self_relations.filter(Q(to_user=user) & Q(block=False)).exists()
+        return self.from_self_relations.filter(Q(to_user=user) & Q(relation_type='fl')).exists()
 
     def is_follower(self, user):
         if not isinstance(user, User):
             raise ValueError
 
-        return self.to_self_relations.filter(Q(from_user=user) & Q(block=False)).exists()
+        return self.to_self_relations.filter(Q(from_user=user) & Q(relation_type='fl')).exists()
 
     def block_toggle(self, user):
         if not isinstance(user, User):
@@ -87,48 +87,48 @@ class User(AbstractUser):
 
             relation = self.from_self_relations.get(to_user=user)
             # 있으면 그게 블락인가?
-            if relation.block:
+            if relation.relation_type == 'bl':
                 # 블락이라면 블락 관계 삭제
                 relation.delete()
             # 팔로우라면 블락으로 관계 변경 후 세이브
             else:
-                relation.block = True
+                relation.relation_type = 'bl'
                 relation.save()
         # 관계가 없는 경우
         else:
             # 블락 관계 생성
-            return self.from_self_relations.create(to_user=user, block=True)
+            return self.from_self_relations.create(to_user=user, relation_type='bl')
 
     def is_block(self, user):
         if not isinstance(user, User):
             raise ValueError
 
-        return self.from_self_relations.filter(Q(to_user=user) & Q(block=True)).exists()
+        return self.from_self_relations.filter(Q(to_user=user) & Q(relation_type='bl')).exists()
 
     def is_blocked(self, user):
         if not isinstance(user, User):
             raise ValueError
 
-        return self.to_self_relations.filter(Q(from_user=user) & Q(block=True)).exists()
+        return self.to_self_relations.filter(Q(from_user=user) & Q(relation_type='bl')).exists()
 
     @property
     def following(self):
-        relations = self.from_self_relations.filter(block=False)
+        relations = self.from_self_relations.filter(relation_type='fl')
         return User.objects.filter(pk__in=relations.values('to_user'))
 
     @property
     def followers(self):
-        relations = self.to_self_relations.filter(block=False)
+        relations = self.to_self_relations.filter(relation_type='fl')
         return User.objects.filter(pk__in=relations.values('from_user'))
 
     @property
     def block(self):
-        relations = self.from_self_relations.filter(block=True)
+        relations = self.from_self_relations.filter(relation_type='bl')
         return User.objects.filter(pk__in=relations.values('to_user'))
 
     @property
     def blocked(self):
-        relations = self.to_self_relations.filter(block=True)
+        relations = self.to_self_relations.filter(relation_type='bl')
         return User.objects.filter(pk__in=relations.values('from_user'))
 
 
@@ -141,14 +141,21 @@ class Relation(models.Model):
         User,
         related_name='to_self_relations',
     )
-    block = models.BooleanField()
+    types_of_relation = (
+            ('fl', 'follow'),
+            ('bl', 'block'),
+        )
+    relation_type = models.CharField(
+        max_length=2,
+        choices=types_of_relation
+    )
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return 'Relation from {} to {} ({})'.format(
             self.from_user,
             self.to_user,
-            'block' if self.block else 'follow',
+            self.relation_type,
         )
 
     class Meta:
