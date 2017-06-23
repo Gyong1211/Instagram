@@ -89,12 +89,14 @@ def profile(request, user_pk=None):
     else:
         pass
     posts = post_list[:(page * post_per_page)]
+    last_post_pk = posts.last().pk
 
     context = {
         'cur_user': user,
         'posts': posts,
         'next_page_num': page + 1,
         'max_page_num': page_num,
+        'last_post_pk': last_post_pk
     }
     return render(request, 'member/profile.html', context=context)
 

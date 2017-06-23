@@ -52,7 +52,7 @@
     {% for post in posts %}
     <li>
         <a href="{% url 'post:post_detail' post_pk=post.pk %}">
-            <img src="{{post.image.url}}" alt="">
+            <img src="{{post.image.url}}" id="post-{{post.pk}}" alt="">
         </a>
     </li>
     {% endfor %}
@@ -60,7 +60,7 @@
     
     <div class="load-next-page">
         {% if next_page_num <= max_page_num %}
-        <a href="{{request.path}}?page={{ next_page_num }}" class="btn btn-primary btn-lg btn-block">더 읽어들이기</a>
+        <a href="{{request.path}}?page={{ next_page_num }}#post-{{last_post_pk}}" class="btn btn-primary btn-lg btn-block">더 읽어들이기</a>
         {% endif %}
     </div>
 </div>
