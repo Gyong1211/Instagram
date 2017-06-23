@@ -51,7 +51,9 @@
     <ul class="profile-photo-list">
     {% for post in posts %}
     <li>
-        <img src="{{post.image.url}}" alt="">
+        <a href="{% url 'post:post_detail' post_pk=post.pk %}">
+            <img src="{{post.image.url}}" alt="">
+        </a>
     </li>
     {% endfor %}
     </ul>
