@@ -56,7 +56,11 @@
     {% for post in posts %}
     <li>
         <a href="{% url 'post:post_detail' post_pk=post.pk %}">
+            {% if post.video %}
+            <img src="{{post.video.url_thumbnail}}" id="post-{{post.pk}}" alt="">
+            {% else %}
             <img src="{{post.image.url}}" id="post-{{post.pk}}" alt="">
+            {% endif %}
         </a>
     </li>
     {% endfor %}
