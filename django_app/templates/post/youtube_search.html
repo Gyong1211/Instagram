@@ -10,7 +10,13 @@
         <ul>
             {% for video in videos %}
             <li>
-                {{ video.title }}
+                <img src="{{video.url_thumbnail}}" alt="">
+                <div>{{ video.title }}</div>
+                <form action="{% url 'post:youtube_post_create' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="video_pk" value="{{ video.pk }}">
+                    <button type="submit" class="btn btn-primary">포스팅!</button>
+                </form>
             </li>
             {% endfor %}
         </ul>

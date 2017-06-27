@@ -16,19 +16,17 @@
     <div class="post-photo-container">
         {% if type == 'list' %}
         <a href="{% url 'post:post_detail' post_pk=post.pk %}">
-            <img src="{{post.image.url}}" alt="">
-        </a>
-        {% else %}
-        <img src="{{post.image.url}}" alt="">
         {% endif %}
-    </div>
-    <div class="post-btn-container">
-        <a href="#">
-            <img src="" alt="">
+
+            {% if post.video %}
+            <iframe width="100%" height="400" src="https://www.youtube.com/embed/{{ post.video.youtube_id }}" frameborder="0" allowfullscreen></iframe>
+            {% else %}
+            <img src="{{post.image.url}}" alt="">
+            {% endif %}
+
+        {% if type == 'list' %}
         </a>
-        <a href="#">
-            <img src="" alt="">
-        </a>
+        {% endif %}
     </div>
     <div class="post-bottom">
         <div class="post-btn-container clearfix">

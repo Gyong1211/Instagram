@@ -1,18 +1,20 @@
 import requests
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.http import require_POST
 
-from ..models import Video
+from ..models import Video, Post, Comment
 
 __all__ = (
     'youtube_search',
+    'post_create_with_video'
 )
 
 
 def youtube_search(request):
     url_youtube_search = 'https://www.googleapis.com/youtube/v3/search'
     YOUTUBE_API_ACCESS_TOKEN = 'AIzaSyAUvTn6g5D6DmX6dHk4_LfNY3rzH1wqRxA'
-    print(request.GET)
     q = request.GET.get('q')
     if q:
         url_youtube_search_params = {
@@ -52,3 +54,21 @@ def youtube_search(request):
         return render(request, 'post/youtube_search.html', context=context)
 
     return render(request, 'post/youtube_search.html')
+
+
+@require_POST
+@login_required
+def post_create_with_video(request):
+    video_pk = request.POST['video_pk']
+    video = get_object_or_404(Video, pk=video_pk)
+
+    post = Post.objects.create(
+        author=request.user,
+        video=video,
+    )
+    post.my_comment = Comment.objects.create(
+        author=request.user,
+        post=post,
+        content=video.title
+    )
+    return redirect('post:post_detail', post_pk=post.pk)

@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from utils.fields import CustomImageField
+
 __all__ = (
     'Post',
     'PostLike'
@@ -12,8 +14,8 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
-    image = models.ImageField(upload_to='post', blank=True)
-
+    image = CustomImageField(upload_to='post', blank=True)
+    video = models.ForeignKey('Video', blank=True, null=True)
     like_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         through='PostLike',

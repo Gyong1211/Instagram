@@ -95,7 +95,7 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.nickname
+        return self.username
 
     def follow_toggle(self, user):
         if not isinstance(user, User):
