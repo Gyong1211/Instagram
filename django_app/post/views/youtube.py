@@ -25,8 +25,8 @@ def youtube_search(request):
         re_pattern = ''.join(['(?=.*{})'.format(item) for item in q.split()])
         # re_pattern = (?=.*검색어1)(?=.*검색어2)(?=.*검색어3)...
         videos = Video.objects.filter(
-            Q(title__regex=re_pattern) |
-            Q(description__regex=re_pattern)
+            Q(title__iregex=re_pattern) |
+            Q(description__iregex=re_pattern)
         )
 
         # videos = Video.objects.filter(title__contains=q)  # 제목에 검색어가 포함되는 경우
