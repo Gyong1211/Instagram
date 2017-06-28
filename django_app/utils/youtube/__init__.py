@@ -4,7 +4,7 @@ from googleapiclient.discovery import build
 
 def search_original(q):
     url_youtube_search = 'https://www.googleapis.com/youtube/v3/search'
-    YOUTUBE_API_ACCESS_TOKEN = 'AIzaSyAUvTn6g5D6DmX6dHk4_LfNY3rzH1wqRxA'
+    YOUTUBE_API_ACCESS_TOKEN = 'AIzaSyD3CQXSZwqDBN8uHbfmiB8KazDBb2bwEX0'
     url_youtube_search_params = {
         'part': 'snippet',
         'key': YOUTUBE_API_ACCESS_TOKEN,
@@ -18,7 +18,7 @@ def search_original(q):
 
 
 def search(q):
-    DEVELOPER_KEY = 'AIzaSyAUvTn6g5D6DmX6dHk4_LfNY3rzH1wqRxA'
+    DEVELOPER_KEY = 'AIzaSyD3CQXSZwqDBN8uHbfmiB8KazDBb2bwEX0'
     YOUTUBE_API_SERVICE_NAME = 'youtube'
     YOUTUBE_API_VERSION = 'v3'
 
