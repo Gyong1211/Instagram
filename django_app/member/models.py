@@ -48,7 +48,7 @@ class UserManager(DefaultUserManager):
                 'email': user_info.get('email', ''),
             }
         )
-        if user_created:
+        if user_created and user_info.get('picture'):
             url_picture = user_info['picture']['data']['url']
             p = re.compile(r'.*\.([^?]+)')
             file_ext = re.search(p, url_picture).group(1)
@@ -57,7 +57,7 @@ class UserManager(DefaultUserManager):
                 file_ext
             )
 
-            temp_file = NamedTemporaryFile(delete=False)
+            temp_file = NamedTemporaryFile()
 
             response = requests.get(url_picture)
 
