@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from ..forms import UserEditForm
@@ -14,6 +15,11 @@ __all__ = (
 
 
 def profile(request, user_pk=None):
+    if not request.user.is_authenticated and not user_pk:
+        login_url = reverse('member:login')
+        redirect_url = login_url + '?next=' + request.get_full_path()
+        return redirect(redirect_url)
+
     if user_pk:
         user = get_object_or_404(User, pk=user_pk)
     else:
