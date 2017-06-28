@@ -97,6 +97,32 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def follow(self, user):
+        if not isinstance(user, User):
+            raise ValueError('"user" argument must <User> class')
+        if self.from_self_relations.filter(to_user=user).exists():
+            relation = self.from_self_relations.get(to_user=user)
+            # 있으면 그게 블락인가?
+            if relation.relation_type == 'bl':
+                # 블락이라면 팔로우로 관계 변경 및 저장
+                relation.relation_type = 'fl'
+                relation.save()
+            else:
+                pass
+        else:
+            self.from_self_relations.create(
+                to_user=user,
+                relation_type='fl'
+            )
+
+
+    def unfollow(self, user):
+        Relation.objects.filter(
+            from_user=self,
+            to_user=user,
+            relation_type='fl'
+        ).delete()
+
     def follow_toggle(self, user):
         if not isinstance(user, User):
             raise ValueError
