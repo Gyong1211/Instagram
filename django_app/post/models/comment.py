@@ -3,6 +3,8 @@ import re
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+
+from .tag import Tag
 from .post import Post
 
 __all__ = (
@@ -22,7 +24,7 @@ class Comment(models.Model):
     )
     content = models.CharField(max_length=120)
     html_content = models.TextField(blank=True)
-    tags = models.ManyToManyField('Tag')
+    tags = models.ManyToManyField(Tag)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     like_users = models.ManyToManyField(
