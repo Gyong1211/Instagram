@@ -23,7 +23,7 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^post/', include('post.urls')),
+    url(r'^post/', include('post.urls.urls_views')),
     url(r'^member/', include('member.urls')),
     url(r'^$', views.index, name='index')
     # url(r'^$', RedirectView.as_view(pattern_name='post:post_list')),
