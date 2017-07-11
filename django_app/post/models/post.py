@@ -43,6 +43,12 @@ class Post(models.Model):
     def like_count(self):
         return self.like_users.count()
 
+    @property
+    def comments(self):
+        if self.my_comment:
+            return self.comment_set.exclude(pk=self.my_comment.pk)
+        return self.comment_set.all()
+
     class Meta:
         ordering = ['-pk', ]
 
@@ -57,3 +63,8 @@ class PostLike(models.Model):
         on_delete=models.CASCADE
     )
     created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (
+            ('post', 'user')
+        )
