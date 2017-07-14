@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
@@ -31,6 +32,11 @@ def comment_create(request, post_pk):
         comment.author = request.user
         comment.post = post
         form.save()
+        email = EmailMessage(
+            '댓글 알림',
+            '당신의 포스트에 {}님의 댓글이 달렸습니다.'.format(request.user),
+            to=[post.author.email])
+        email.send()
     else:
         e = '<br>'.join(['<br>'.join(v) for v in form.errors.values()])
         messages.error(request, e)
