@@ -43,7 +43,7 @@
   font-size: 11px;
 }
 
-.field-wrapper input[type=text], .field-wrapper input[type=password] {
+.field-wrapper input[type=text], .field-wrapper input[type=password], .field-wrapper input[type=email] {
   width: 100%;
   box-sizing: border-box;
 }

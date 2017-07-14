@@ -91,7 +91,7 @@ class User(AbstractUser):
         through='Relation',
         symmetrical=False,
     )
-
+    email = models.EmailField(null=True, unique=True)
     objects = UserManager()
 
     def __str__(self):
@@ -207,7 +207,6 @@ class User(AbstractUser):
     def blocked(self):
         relations = self.to_self_relations.filter(relation_type='bl')
         return User.objects.filter(pk__in=relations.values('from_user'))
-
 
 class Relation(models.Model):
     from_user = models.ForeignKey(

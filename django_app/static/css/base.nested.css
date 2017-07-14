@@ -3,7 +3,7 @@ html, body {
   line-height: 18px;
   background-color: #fafafa; }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email] {
   border: 1px solid #dbdbdb;
   border-radius: 3px;
   color: #262626;
