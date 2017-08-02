@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'utils',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -93,6 +94,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -184,3 +187,7 @@ EMAIL_PORT = 587
 # Celery
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+CORS_ORIGIN_WHITELIST = (
+    'null',
+)
